@@ -80,8 +80,9 @@ test('OTP test mode supports registration and login when enabled and fails close
   assert.match(firstRequest.body.testCode, /^\d{6}$/);
   assert.equal(
     firstRequest.body.message,
-    'Test OTP generated. It expires in five minutes. This does not verify email ownership.',
+    'Your verification code is ready. Enter the code displayed below.',
   );
+  assert.equal(firstRequest.body.warning, 'Test mode codes do not verify email ownership.');
   let firstChallenge = database
     .prepare('SELECT * FROM otp_challenges WHERE email=? AND purpose=?')
     .get(firstEmail, 'signup');

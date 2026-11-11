@@ -15,14 +15,15 @@ async function sendCode() {
   });
   const result = await response.json();
   if (!response.ok) throw new Error(result.error || 'Could not send a verification code.');
+  if (typeof result.testCode !== 'string' || !/^\d{6}$/.test(result.testCode)) {
+    throw new Error('The server did not provide a test code. No email was sent. Check OTP_TEST_MODE in Render.');
+  }
   registerForm.hidden = true;
   verifyForm.hidden = false;
-  const testCode = typeof result.testCode === 'string';
-  document.getElementById('codeSentTo').textContent = testCode
-    ? `TEST MODE — verification code: ${result.testCode}. Expires in five minutes. This code does not verify email ownership.`
-    : `Enter the verification code sent to ${signupData.email}.`;
+  document.getElementById('codeSentTo').textContent =
+    `TEST MODE - verification code: ${result.testCode}. Expires in five minutes. This code does not verify email ownership.`;
   verifyForm.elements.code.focus();
-  return testCode;
+  return true;
 }
 
 registerForm.addEventListener('submit', async (event) => {
@@ -37,7 +38,7 @@ registerForm.addEventListener('submit', async (event) => {
   try {
     const testCode = await sendCode();
     feedback.textContent = testCode
-      ? 'OTP test mode is active. Copy the code shown above. This is not proof of email ownership.'
+      ? 'Your verification code is ready. Enter the code displayed below.'
       : '';
   } catch (error) {
     feedback.textContent = error.message;
@@ -77,8 +78,8 @@ document.getElementById('resendButton').addEventListener('click', async () => {
   try {
     const testCode = await sendCode();
     feedback.textContent = testCode
-      ? 'A new test code is shown above.'
-      : 'A new code has been sent.';
+      ? 'Your new verification code is ready. Enter the code displayed above.'
+      : '';
   } catch (error) {
     feedback.textContent = error.message;
   } finally {

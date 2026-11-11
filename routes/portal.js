@@ -160,21 +160,16 @@ async function handleAuthRequest(request, response, database, url, sessions) {
                 'No active club leader account uses this email. Ask the Clubs Office to create or enable your leader account first.',
             });
           }
-          if (isOtpTestModeEnabled()) {
-            return sendJson(response, 404, {
-              error: 'No active member account uses this email. Create an account first.',
-            });
-          }
-          return sendJson(response, 200, {
-            message: 'If that account is active, a sign-in code has been sent.',
+          return sendJson(response, 404, {
+            error: 'No active member account uses this email. Create an account first.',
           });
         }
       }
       const { code } = await issueOtp(database, { email, role, purpose, metadata });
       otpRequestTimes.set(rateKey, Date.now());
       return sendJson(response, 200, {
-        message:
-          'Test OTP generated. It expires in five minutes. This does not verify email ownership.',
+        message: 'Your verification code is ready. Enter the code displayed below.',
+        warning: 'Test mode codes do not verify email ownership.',
         testCode: code,
       });
     }
@@ -197,7 +192,7 @@ async function handleAuthRequest(request, response, database, url, sessions) {
         !['member', 'leader'].includes(role) ||
         !/^\d{6}$/.test(code)
       ) {
-        return sendJson(response, 400, { error: 'Enter the six-digit code sent to your email.' });
+        return sendJson(response, 400, { error: 'Enter the six-digit verification code.' });
       }
       const verifyRateKey = `${request.socket.remoteAddress || 'unknown'}:${email}:${role}:${purpose}`;
       if (isOtpVerificationRateLimited(verifyRateKey)) {

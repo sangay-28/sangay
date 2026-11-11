@@ -17,14 +17,15 @@ async function sendCode() {
   });
   const result = await response.json();
   if (!response.ok) throw new Error(result.error || 'Could not send a code.');
+  if (typeof result.testCode !== 'string' || !/^\d{6}$/.test(result.testCode)) {
+    throw new Error('The server did not provide a test code. No email was sent. Check OTP_TEST_MODE in Render.');
+  }
   loginForm.hidden = true;
   verifyForm.hidden = false;
-  const testCode = typeof result.testCode === 'string';
-  document.getElementById('codeSentTo').textContent = testCode
-    ? `TEST MODE — verification code: ${result.testCode}. Expires in five minutes. This code does not verify email ownership.`
-    : `Enter the verification code sent to ${pendingEmail}.`;
+  document.getElementById('codeSentTo').textContent =
+    `TEST MODE - verification code: ${result.testCode}. Expires in five minutes. This code does not verify email ownership.`;
   verifyForm.elements.code.focus();
-  return testCode;
+  return true;
 }
 
 document.querySelectorAll('.role').forEach((button) =>
@@ -50,8 +51,8 @@ loginForm.addEventListener('submit', async (event) => {
   try {
     const testCode = await sendCode();
     feedback.textContent = testCode
-      ? 'OTP test mode is active. Copy the code shown above. This is not proof of email ownership.'
-      : 'Check your inbox and spam folder. New members must create an account first; club leader accounts are created by an administrator.';
+      ? 'Your verification code is ready. Enter the code displayed below.'
+      : '';
   } catch (error) {
     feedback.textContent = error.message;
   } finally {
@@ -90,8 +91,8 @@ document.getElementById('resendButton').addEventListener('click', async () => {
   try {
     const testCode = await sendCode();
     feedback.textContent = testCode
-      ? 'A new test code is shown above.'
-      : 'A new code has been sent.';
+      ? 'Your new verification code is ready. Enter the code displayed above.'
+      : '';
   } catch (error) {
     feedback.textContent = error.message;
   } finally {
