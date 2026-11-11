@@ -58,7 +58,9 @@ async function issueOtp(database, { email, role, purpose, metadata = null }) {
     deliveryError.statusCode = 503;
     console.error(
       'Verification email delivery failed:',
-      error.code || error.command || error.message,
+      error.code === 'ERESEND'
+        ? `${error.code}: ${error.message}`
+        : error.code || error.command || error.message,
     );
     throw deliveryError;
   }
