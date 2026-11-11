@@ -45,22 +45,18 @@ async function issueOtp(database, { email, role, purpose, metadata = null }) {
     await sendLoginCode(email, code, purpose);
   } catch (error) {
     await run(database, 'DELETE FROM otp_challenges WHERE id=?', [Number(result.lastInsertRowid)]);
-    if (error.code === 'EAUTH') {
-      const deliveryError = new Error(
-        'Your email provider rejected the SMTP login. Check SMTP_USER and the Gmail App Password in .env.',
-      );
-      deliveryError.statusCode = 503;
-      throw deliveryError;
-    }
-    const deliveryError = new Error(
-      'The verification email could not be sent. Check SMTP_HOST, SMTP_PORT, and your email provider settings in .env, then check the server terminal for details.',
-    );
-    deliveryError.statusCode = 503;
+    const deliveryError =
+      (typeof error.code === 'string' && error.code.startsWith('ERESEND')) ||
+      error.code === 'EEMAILCONFIG'
+        ? error
+        : Object.assign(
+            new Error('The verification email could not be sent. Please try again later.'),
+            { code: 'EEMAILDELIVERY', statusCode: 503 },
+          );
     console.error(
       'Verification email delivery failed:',
-      error.code === 'ERESEND'
-        ? `${error.code}: ${error.message}`
-        : error.code || error.command || error.message,
+      deliveryError.code || 'EEMAILDELIVERY',
+      deliveryError.message,
     );
     throw deliveryError;
   }

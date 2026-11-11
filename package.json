@@ -16,8 +16,8 @@
     "format:check": "prettier --check \"**/*.{js,json,md,html,css}\""
   },
   "dependencies": {
-    "nodemailer": "^10.0.10",
-    "pg": "^8.23.1"
+    "pg": "^8.23.1",
+    "resend": "^6.38.0"
   },
   "devDependencies": {
     "eslint": "^9.23.0",
