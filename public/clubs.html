@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clubs</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-logo">
+        <div class="logo-circle">
+          <img src="images/sherubtse logo.png" alt="Logo" />
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="clubs.html" class="active">Clubs</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="About_us.html">About</a></li>
+        <li><a href="join-club.html">Join Club</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li class="mobile-search"><a href="search.html">Search</a></li>
+      </ul>
+      <a class="nav-search" href="search.html" aria-label="Search the site">
+        <i class="fas fa-search"></i>
+        <span>Search</span>
+      </a>
+      <div class="hamburger"><i class="fas fa-bars"></i></div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-text">
+        <h1>Our Clubs</h1>
+        <p>Explore and join the clubs that match your passion</p>
+      </div>
+      <div class="hero-images">
+        <div class="hero-img-wrap"><img src="images/h1.jpg" alt="club" /></div>
+        <div class="hero-img-wrap"><img src="images/h2.jpg" alt="club" /></div>
+        <div class="hero-img-wrap"><img src="images/h3.jpg" alt="club" /></div>
+        <div class="hero-img-wrap"><img src="images/h4.jpg" alt="club" /></div>
+      </div>
+    </section>
+
+    <section class="filter-bar">
+      <div class="search-input">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search clubs..." id="searchInput" oninput="filterClubs()" />
+      </div>
+      <div class="filter-tabs">
+        <button class="tab active" onclick="setFilter('All', this)">All</button>
+        <button class="tab" onclick="setFilter('Academic', this)">Academic</button>
+        <button class="tab" onclick="setFilter('Sports', this)">Sports</button>
+        <button class="tab" onclick="setFilter('Cultural', this)">Cultural</button>
+        <button class="tab" onclick="setFilter('Social', this)">Social</button>
+        <button
+          class="tab more-btn"
+          type="button"
+          id="resetClubFilters"
+          aria-label="Clear club search and filters"
+          title="Clear search and filters"
+        >
+          <i class="fas fa-undo"></i>
+        </button>
+      </div>
+    </section>
+
+    <section class="clubs-section">
+      <div class="clubs-grid" id="clubsGrid">
+        <div class="club-card" data-category="Social">
+          <div class="card-img">
+            <img src="images/tara.jpg" alt="Sherubtse Tarayana" />
+          </div>
+          <div class="card-body">
+            <h3>Sherubtse Tarayana</h3>
+            <p>Empowering communities through service.</p>
+            <div class="card-footer">
+              <span class="members"><i class="fas fa-users"></i> 200 Member</span>
+              <button class="join-btn">Join</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="club-card" data-category="Cultural">
+          <div class="card-img">
+            <img src="images/artpic.jpg" alt="Sherubtse Art Club" />
+          </div>
+          <div class="card-body">
+            <h3>Sherubtse Art Club</h3>
+            <p>Express creativity through Art.</p>
+            <div class="card-footer">
+              <span class="members"><i class="fas fa-users"></i> 120 Member</span>
+              <button class="join-btn">Join</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="club-card" data-category="Academic">
+          <div class="card-img">
+            <img src="images/smspic.jpg" alt="SMS" />
+          </div>
+          <div class="card-body">
+            <h3>SMS</h3>
+            <p>Photography, Film &amp; Broadcasting</p>
+            <div class="card-footer">
+              <span class="members"><i class="fas fa-users"></i> 196 Member</span>
+              <button class="join-btn">Join</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="club-card" data-category="Social">
+          <div class="card-img">
+            <img src="images/gnhpic.jpg" alt="GNH Youth Club" />
+          </div>
+          <div class="card-body">
+            <h3>GNH Youth Club</h3>
+            <p>Promote Happiness and Wellbeing</p>
+            <div class="card-footer">
+              <span class="members"><i class="fas fa-users"></i> 160 Member</span>
+              <button class="join-btn">Join</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="club-card" data-category="Cultural">
+          <div class="card-img">
+            <img src="images/cul.jpg" alt="Cultural Unit" />
+          </div>
+          <div class="card-body">
+            <h3>CULTURAL UNIT</h3>
+            <p>Celebrate culture and creativity.</p>
+            <div class="card-footer">
+              <span class="members"><i class="fas fa-users"></i> 150 Member</span>
+              <button class="join-btn">Join</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="club-card" data-category="Academic">
+          <div class="card-img">
+            <img src="images/demopic.jpeg" alt="Democracy Club" />
+          </div>
+          <div class="card-body">
+            <h3>Democracy Club</h3>
+            <p>Promoting leadership and civic awareness.</p>
+            <div class="card-footer">
+              <span class="members"><i class="fas fa-users"></i> 126 Member</span>
+              <button class="join-btn">Join</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="club-card" data-category="Social">
+          <div class="card-img">
+            <img src="images/ypeerpic.jpg" alt="Y-PEER" />
+          </div>
+          <div class="card-body">
+            <h3>Y-PEER</h3>
+            <p>Empowering youth through peer education.</p>
+            <div class="card-footer">
+              <span class="members"><i class="fas fa-users"></i> 197 Member</span>
+              <button class="join-btn">Join</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="club-card" data-category="Sports">
+          <div class="card-img">
+            <img src="images/taewondo.jpg" alt="Taekwondo Club" />
+          </div>
+          <div class="card-body">
+            <h3>Taekwondo Club</h3>
+            <p>Build strength, discipline, and confidence.</p>
+            <div class="card-footer">
+              <span class="members"><i class="fas fa-users"></i> 130 Member</span>
+              <button class="join-btn">Join</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-left">
+        <div class="footer-logo">
+          <div class="logo-circle small">
+            <img src="images/sherubtse logo.png" alt="Logo" />
+          </div>
+          <span>Sherubtse <strong>Clubs</strong></span>
+        </div>
+        <div class="footer-address">
+          <i class="fas fa-map-marker-alt"></i>
+          <div>
+            <p>Sherubtse College</p>
+            <p>Kanglung, Trashigang</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-right">
+        <div class="footer-social">
+          <h4>Contact Us</h4>
+          <div class="footer-center">
+            <p><i class="fas fa-phone"></i> 17276109/77276109</p>
+            <p><i class="fas fa-envelope"></i> Units@sherubtse.bt</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-right">
+        <div class="footer-social">
+          <h4>Follow Us</h4>
+          <div class="social-icons">
+            <a
+              href="https://www.instagram.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Instagram"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a
+              href="https://www.tiktok.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Tiktok"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a
+              href="https://www.youtube.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Youtube"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.facebook.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Facebook"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Tab switching
+      document.querySelectorAll('.tab').forEach((tab) => {
+        tab.addEventListener('click', function () {
+          if (!this.classList.contains('more')) {
+            document.querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
+            this.classList.add('active');
+          }
+        });
+      });
+
+      // Hamburger menu
+      document.querySelector('.hamburger').addEventListener('click', function () {
+        document.querySelector('.nav-links').classList.toggle('open');
+      });
+    </script>
+    <script src="js/clubs.js"></script>
+  </body>
+</html>

@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events & Activities Sherubtse Clubs</title>
+    <link rel="stylesheet" href="css/events.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-logo">
+        <div class="logo-circle">
+          <img src="images/sherubtse logo.png" alt="Logo" />
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="clubs.html">Clubs</a></li>
+        <li><a href="events.html" class="active">Events</a></li>
+        <li><a href="About_us.html">About</a></li>
+        <li><a href="join-club.html">Join Club</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li class="mobile-search"><a href="search.html">Search</a></li>
+      </ul>
+      <a class="nav-search" href="search.html" aria-label="Search the site">
+        <i class="fas fa-search"></i>
+        <span>Search</span>
+      </a>
+      <div class="hamburger"><i class="fas fa-bars"></i></div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-bg">
+        <img src="images2/inspect.jpeg" />
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-content">
+        <p class="hero-eyebrow">Sherubtse College · Kanglung</p>
+        <h1>Events &amp; <br /><em>Activities</em></h1>
+        <p class="hero-sub">
+          Stay updated with club events, workshops, tournaments, and cultural celebrations.
+        </p>
+        <div class="hero-actions">
+          <a href="#events-grid" class="btn-primary">Explore Events</a>
+          <a href="register.html" class="btn-ghost">Register Now</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- featured event -->
+    <section class="featured-event container">
+      <div class="featured-card">
+        <div class="featured-img">
+          <img src="images2/panel.jpeg" />
+          <span class="badge badge-academic">Academic</span>
+        </div>
+        <div class="featured-info">
+          <p class="eyebrow">⭐ Featured Event</p>
+          <h2>Model UN Conference 2026</h2>
+          <p class="desc">
+            Join us for an exciting simulation of global diplomacy. Students represent nations,
+            debate world issues, and craft resolutions — an unparalleled learning experience.
+          </p>
+          <div class="meta-list">
+            <span><i class="fas fa-calendar-alt"></i> March 25, 2026</span>
+            <span><i class="fas fa-map-marker-alt"></i> Auditorium</span>
+            <span><i class="fas fa-users"></i> 120 Seats</span>
+          </div>
+          <a href="event-detail.html?id=model-un" class="btn-primary"
+            >Register Now <i class="fas fa-arrow-right"></i
+          ></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- upcoming and past events -->
+    <section class="events-section container">
+      <div class="section-header">
+        <h2>All <em>Events</em></h2>
+        <div class="toggle-wrap">
+          <button class="toggle-btn active" id="upcomingBtn">Upcoming</button>
+          <button class="toggle-btn" id="pastBtn">Past Events</button>
+        </div>
+      </div>
+
+      <!-- Events Grid -->
+      <div class="events-grid" id="eventsGrid">
+        <!-- Upcoming -->
+        <div class="event-card" data-cat="arts" data-status="upcoming">
+          <div class="card-img">
+            <img src="images2/Arts exibition.jpeg" alt="Art Exhibition" /><span
+              class="badge badge-cultural"
+              >Arts</span
+            >
+          </div>
+          <div class="card-body">
+            <h3>Art Exhibition 2026</h3>
+            <p>Showcasing student creativity and talent from across departments.</p>
+            <div class="card-meta">
+              <span><i class="fas fa-calendar"></i> April 5</span
+              ><span><i class="fas fa-map-marker-alt"></i> Art Block</span>
+            </div>
+            <div class="card-actions">
+              <a href="event-detail.html?id=art-exhibition" class="btn-sm btn-outline">View Info</a>
+              <a href="register.html?event=art-exhibition" class="btn-sm btn-primary">Register</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="event-card" data-cat="social" data-status="upcoming">
+          <div class="card-img">
+            <img src="images2/cultural.jpeg" alt="Culture Night" /><span class="badge badge-social"
+              >Social</span
+            >
+          </div>
+          <div class="card-body">
+            <h3>Culture Night</h3>
+            <p>Celebrating diversity and tradition from every region of Bhutan.</p>
+            <div class="card-meta">
+              <span><i class="fas fa-calendar"></i> April 12</span
+              ><span><i class="fas fa-map-marker-alt"></i> Main Hall</span>
+            </div>
+            <div class="card-actions">
+              <a href="event-detail.html?id=culture-night" class="btn-sm btn-outline">View Info</a>
+              <a href="register.html?event=culture-night" class="btn-sm btn-primary">Register</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="event-card" data-cat="sports" data-status="upcoming">
+          <div class="card-img">
+            <img src="images2/tt.jpeg" alt="Indoor Tournament" /><span class="badge badge-sports"
+              >Sports</span
+            >
+          </div>
+          <div class="card-body">
+            <h3>Indoor Tournament 2026</h3>
+            <p>Compete and showcase your athletic prowess in indoor games.</p>
+            <div class="card-meta">
+              <span><i class="fas fa-calendar"></i> April 20</span
+              ><span><i class="fas fa-map-marker-alt"></i> Sports Hall</span>
+            </div>
+            <div class="card-actions">
+              <a href="event-detail.html?id=indoor-tournament" class="btn-sm btn-outline"
+                >View Info</a
+              >
+              <a href="register.html?event=indoor-tournament" class="btn-sm btn-primary"
+                >Register</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="event-card" data-cat="academic" data-status="upcoming">
+          <div class="card-img">
+            <img src="images2/debate.jpeg" alt="Debate Competition" /><span
+              class="badge badge-academic"
+              >Academic</span
+            >
+          </div>
+          <div class="card-body">
+            <h3>Debate Competition</h3>
+            <p>Sharpening student minds through structured argument and critical thinking.</p>
+            <div class="card-meta">
+              <span><i class="fas fa-calendar"></i> May 3</span
+              ><span><i class="fas fa-map-marker-alt"></i> Seminar Hall</span>
+            </div>
+            <div class="card-actions">
+              <a href="event-detail.html?id=debate" class="btn-sm btn-outline">View Info</a>
+              <a href="register.html?event=debate" class="btn-sm btn-primary">Register</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="event-card" data-cat="sports" data-status="upcoming">
+          <div class="card-img">
+            <img src="images2/run.jpeg" alt="Annual Marathon" /><span class="badge badge-sports"
+              >Sports</span
+            >
+          </div>
+          <div class="card-body">
+            <h3>Annual Marathon</h3>
+            <p>Run for your health in the scenic trails around the Kanglung campus.</p>
+            <div class="card-meta">
+              <span><i class="fas fa-calendar"></i> May 10</span
+              ><span><i class="fas fa-map-marker-alt"></i> Campus Trail</span>
+            </div>
+            <div class="card-actions">
+              <a href="event-detail.html?id=marathon" class="btn-sm btn-outline">View Info</a>
+              <a href="register.html?event=marathon" class="btn-sm btn-primary">Register</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="event-card" data-cat="academic" data-status="upcoming">
+          <div class="card-img">
+            <img src="images2/demo.jpeg" alt="UN Workshop" /><span class="badge badge-academic"
+              >Academic</span
+            >
+          </div>
+          <div class="card-body">
+            <h3>UN Workshop</h3>
+            <p>Showcasing student potential and international diplomacy simulations.</p>
+            <div class="card-meta">
+              <span><i class="fas fa-calendar"></i> May 18</span
+              ><span><i class="fas fa-map-marker-alt"></i> Sherubtse Hall</span>
+            </div>
+            <div class="card-actions">
+              <a href="event-detail.html?id=un-workshop" class="btn-sm btn-outline">View Info</a>
+              <a href="register.html?event=un-workshop" class="btn-sm btn-primary">Register</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Past Events-->
+        <div class="event-card past-event" data-cat="cultural" data-status="past">
+          <div class="card-img past-img">
+            <img src="images2/fashion.jpeg" alt="Music Fest" /><span class="badge badge-cultural"
+              >Cultural</span
+            >
+            <div class="past-overlay">Past</div>
+          </div>
+          <div class="card-body">
+            <h3>Music Fest 2025</h3>
+            <p>An unforgettable night of live performances and student talent.</p>
+            <div class="card-meta">
+              <span><i class="fas fa-calendar"></i> Nov 20, 2025</span
+              ><span><i class="fas fa-map-marker-alt"></i> MPH</span>
+            </div>
+            <div class="card-actions">
+              <a href="event-detail.html?id=music-fest" class="btn-sm btn-outline">View Recap</a>
+              <a href="gallery.html?event=music-fest" class="btn-sm btn-ghost-sm">Gallery</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="event-card past-event" data-cat="social" data-status="past">
+          <div class="card-img past-img">
+            <img src="images2/water tank.jpeg" alt="Cricket Cup" /><span class="badge badge-sports"
+              >Social</span
+            >
+            <div class="past-overlay">Past</div>
+          </div>
+          <div class="card-body">
+            <h3>Water Tank Cleaning 2025</h3>
+            <p>Club members clean the water tank yearly for clean water in the campus.</p>
+            <div class="card-meta">
+              <span><i class="fas fa-calendar"></i> Oct 5, 2025</span
+              ><span><i class="fas fa-map-marker-alt"></i> Above DH-II</span>
+            </div>
+            <div class="card-actions">
+              <a href="event-detail.html?id=cricket-cup" class="btn-sm btn-outline">View Recap</a>
+              <a href="gallery.html?event=cricket-cup" class="btn-sm btn-ghost-sm">Gallery</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="event-card past-event" data-cat="academic" data-status="past">
+          <div class="card-img past-img">
+            <img src="images2/fught.jpeg" alt="Science Fair" /><span class="badge badge-academic"
+              >Sports</span
+            >
+            <div class="past-overlay">Past</div>
+          </div>
+          <div class="card-body">
+            <h3>Taewondo Showcase</h3>
+            <p>Relive moments from our Taewondo tournamnets and showcases.</p>
+            <div class="card-meta">
+              <span><i class="fas fa-calendar"></i> Sep 15, 2025</span
+              ><span><i class="fas fa-map-marker-alt"></i> MPH</span>
+            </div>
+            <div class="card-actions">
+              <a href="event-detail.html?id=science-fair" class="btn-sm btn-outline">View Recap</a>
+              <a href="gallery.html?event=science-fair" class="btn-sm btn-ghost-sm">Gallery</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── STATS ───── -->
+    <section class="stats-band">
+      <div class="container stats-grid">
+        <div class="stat">
+          <span class="stat-num">15+</span><span class="stat-label">Active Clubs</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">50+</span><span class="stat-label">Events Per Year</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">700+</span><span class="stat-label">Students Engaged</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">20+</span><span class="stat-label">Years Running</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── CTA BANNER ───── -->
+    <section class="cta-banner">
+      <div class="cta-inner">
+        <h2>Don't miss out on the next big event</h2>
+        <p>Register your club or sign up as a participant today.</p>
+        <div class="cta-btns">
+          <a href="register.html" class="btn-primary">Register Now</a>
+          <a href="contact.html" class="btn-ghost">Contact Us</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-left">
+        <div class="footer-logo">
+          <div class="logo-circle small">
+            <img src="images/sherubtse logo.png" alt="Logo" />
+          </div>
+          <span>Sherubtse <strong>Clubs</strong></span>
+        </div>
+        <div class="footer-address">
+          <i class="fas fa-map-marker-alt"></i>
+          <div>
+            <p>Sherubtse College</p>
+            <p>Kanglung, Trashigang</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-right">
+        <div class="footer-social">
+          <h4>Contact Us</h4>
+          <div class="footer-center">
+            <p><i class="fas fa-phone"></i> 17276109/77276109</p>
+            <p><i class="fas fa-envelope"></i> Units@sherubtse.bt</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-right">
+        <div class="footer-social">
+          <h4>Follow Us</h4>
+          <div class="social-icons">
+            <a
+              href="https://www.instagram.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Instagram"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a
+              href="https://www.tiktok.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Tiktok"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a
+              href="https://www.youtube.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Youtube"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.facebook.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Facebook"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Tab switching
+      document.querySelectorAll('.tab').forEach((tab) => {
+        tab.addEventListener('click', function () {
+          if (!this.classList.contains('more')) {
+            document.querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
+            this.classList.add('active');
+          }
+        });
+      });
+
+      // Hamburger menu
+      document.querySelector('.hamburger').addEventListener('click', function () {
+        document.querySelector('.nav-links').classList.toggle('open');
+      });
+    </script>
+
+    <script src="js/events.js"></script>
+  </body>
+</html>

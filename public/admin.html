@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0d1b4b" />
+    <title>Clubs Office | Sherubtse Clubs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/admin.css" />
+    <link rel="stylesheet" href="css/workspace.css" />
+    <script src="js/admin.js" defer></script>
+  </head>
+  <body>
+    <header class="workspace-nav">
+      <a class="workspace-brand" href="admin.html" aria-label="Sherubtse Clubs administration">
+        <img class="workspace-mark" src="images/sherubtse%20logo.png" alt="" />
+        <span>Sherubtse <b>Clubs</b></span>
+      </a>
+      <nav class="workspace-links" aria-label="Main navigation">
+        <a href="admin.html" aria-current="page">Dashboard</a
+        ><a href="admin-users.html">Manage accounts</a>
+      </nav>
+      <div class="workspace-account">
+        <span>Clubs Office</span
+        ><button id="logoutButton" class="workspace-signout" type="button" hidden>Sign out</button>
+      </div>
+    </header>
+    <main>
+      <section class="admin-hero">
+        <div class="admin-hero-copy">
+          <p class="eyebrow">SHERUBTSE COLLEGE · CLUBS OFFICE</p>
+          <h1>Make campus life happen.</h1>
+          <p class="muted">
+            Manage club applications, student events, and messages from one place.
+          </p>
+        </div>
+        <a class="button button-quiet" href="admin-users.html">Manage accounts</a>
+      </section>
+
+      <section id="loginPanel" class="login-panel">
+        <p class="eyebrow">PRIVATE ADMIN AREA</p>
+        <h2>Welcome back</h2>
+        <p class="muted">
+          Sign in with your administrator email and password to review club applications and event
+          activity.
+        </p>
+        <form id="loginForm">
+          <label
+            >Email address<input name="email" type="email" autocomplete="username" required
+          /></label>
+          <label
+            >Password<input
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+          /></label>
+          <button class="button" type="submit">Sign in</button>
+          <p id="loginFeedback" class="feedback" role="status"></p>
+        </form>
+      </section>
+
+      <section id="dashboard" hidden>
+        <div class="heading">
+          <div>
+            <p class="eyebrow">CLUBS OFFICE</p>
+            <h1>Submission dashboard</h1>
+            <p class="muted">
+              Review the latest messages, membership requests, and event registrations.
+            </p>
+          </div>
+          <div class="heading-actions">
+            <a class="button button-outline" href="admin-users.html">Manage accounts</a
+            ><button id="refreshButton" class="button" type="button">Refresh activity</button>
+          </div>
+        </div>
+        <p id="dashboardFeedback" class="feedback" role="status"></p>
+        <div id="summary" class="summary" aria-label="Submission totals"></div>
+        <nav id="tabs" class="tabs" aria-label="Submission types">
+          <button class="tab active" data-tab="memberships" type="button">Memberships</button>
+          <button class="tab" data-tab="registrations" type="button">Event registrations</button>
+          <button class="tab" data-tab="contacts" type="button">Messages</button>
+        </nav>
+        <div id="submissionList" class="submission-list"></div>
+      </section>
+    </main>
+    <footer>Built for the Sherubtse College Clubs community</footer>
+  </body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sherubtse Clubs</title>
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/About_us.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-logo">
+        <div class="logo-circle">
+          <img src="images/sherubtse logo.png" alt="Logo" />
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="clubs.html">Clubs</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="About_us.html" class="active">About</a></li>
+        <li><a href="join-club.html">Join Club</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li class="mobile-search"><a href="search.html">Search</a></li>
+      </ul>
+      <a class="nav-search" href="search.html" aria-label="Search the site">
+        <i class="fas fa-search"></i>
+        <span>Search</span>
+      </a>
+      <div class="hamburger"><i class="fas fa-bars"></i></div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h1>About Us</h1>
+        <p>Learn more about our vibrant club community at<br />Sherubtse College</p>
+      </div>
+    </section>
+
+    <section class="intro">
+      <div class="intro-text">
+        <p>
+          Sherubtse Clubs is a student-driven platform that brings together diverse clubs to promote
+          creativity, leadership, and community engagement. We provide opportunities for students to
+          explore their interests, develop new skills, and actively participate in meaningful
+          activities both on and off campus.
+        </p>
+      </div>
+
+      <div class="intro-image">
+        <img src="images/aboutus.jpg" alt="Students gathering" />
+      </div>
+    </section>
+
+    <section class="why-join">
+      <div class="section-bg"></div>
+      <div class="why-inner">
+        <h2>Why Join Our Clubs?</h2>
+        <div class="cards-row">
+          <div class="feature-card">
+            <div class="icon-wrap yellow">
+              <i class="fas fa-lightbulb"></i>
+            </div>
+            <h3>Develop Skills</h3>
+            <p>Enhance your personal and professional skills</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon-wrap blue">
+              <i class="fas fa-user-friends"></i>
+            </div>
+            <h3>Build Friendships</h3>
+            <p>Meet and connect with like-minded students.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="icon-wrap teal">
+              <i class="fas fa-heart"></i>
+            </div>
+            <h3>Make a Difference</h3>
+            <p>Contribute to campus and community betterment</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script>
+      document.querySelector('.hamburger').addEventListener('click', () => {
+        document.querySelector('.nav-links').classList.toggle('open');
+      });
+    </script>
+  </body>
+</html>

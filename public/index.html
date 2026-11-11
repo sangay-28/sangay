@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sherubtse Clubs</title>
+    <link rel="stylesheet" href="css/index.css" />
+    <script src="js/home-auth.js" defer></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="hamburger"><i class="fas fa-bars"></i></div>
+      <div class="nav-logo">
+        <div class="logo-circle">
+          <img src="images/sherubtse logo.png" alt="Logo" />
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="clubs.html">Clubs</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="About_us.html">About</a></li>
+        <li><a href="join-club.html">Join Club</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li class="mobile-search"><a href="search.html">Search</a></li>
+        <li id="signInLink"><a href="login.html">Sign in</a></li>
+        <li id="signUpLink"><a href="signup.html">Sign up</a></li>
+        <li id="signedInNav" class="signed-in-nav" hidden>
+          <span id="signedInName"></span>
+          <button id="signOutButton" type="button">Sign out</button>
+        </li>
+      </ul>
+      <a class="nav-search" href="search.html" aria-label="Search the site">
+        <i class="fas fa-search"></i>
+        <span>Search</span>
+      </a>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-content">
+        <p id="signedInWelcome" class="signed-in-welcome" hidden></p>
+        <h1>Explore. Engage. Grow</h1>
+        <p>Join a community of passionate students at Sherubtse Clubs.</p>
+        <div class="hero-buttons">
+          <a href="clubs.html" class="btn btn-primary">Explore Clubs</a>
+          <a href="join-club.html" class="btn btn-outline">Join Now</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="hero-img-overlay"></div>
+        <img src="images/hero_bg.jpg" alt="Students" />
+      </div>
+    </section>
+
+    <section class="why-join">
+      <h2>Why to Join Our Clubs?</h2>
+      <div class="why-cards">
+        <div class="why-card">
+          <div class="why-icon">💡</div>
+          <h3>Skill Development</h3>
+          <p>Develop leadership &amp; global awareness</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">🤝</div>
+          <h3>Networking</h3>
+          <p>Connect with peers, Seniors and Professionals</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">🌍</div>
+          <h3>Community Impact</h3>
+          <p>Contribute to positive change in our community</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="discover">
+      <h2>Discover Our Clubs</h2>
+      <div class="filter-tabs">
+        <button class="tab active" data-category="All">All</button>
+        <button class="tab" data-category="Academic">Academic</button>
+        <button class="tab" data-category="Sports">Sports</button>
+        <button class="tab" data-category="Cultural">Cultural</button>
+        <button class="tab" data-category="Social">Social</button>
+      </div>
+      <div class="clubs-slider-wrapper">
+        <button class="slider-btn prev"><i class="fas fa-chevron-left"></i></button>
+        <div class="clubs-grid">
+          <div class="club-card" data-category="Social">
+            <div class="club-logo">
+              <img src="images/tarayana.png" alt="Sherubtse Tarayana" />
+            </div>
+            <h4>Sherubtse Tarayana</h4>
+            <p>Empowering communities through service.</p>
+            <a href="Tarayana.html" class="btn btn-sm">View Details</a>
+          </div>
+
+          <div class="club-card" data-category="Social">
+            <div class="club-logo">
+              <img src="images/gnh.png" alt="GNH Youth Club" />
+            </div>
+            <h4>GNH Youth Club</h4>
+            <p>Promote Happiness and Wellbeing</p>
+            <a href="GNH.html" class="btn btn-sm">View Details</a>
+          </div>
+
+          <div class="club-card" data-category="Academic">
+            <div class="club-logo">
+              <img src="images/sms.jpg" alt="SMS" />
+            </div>
+            <h4>SMS</h4>
+            <p>Photography, Film &amp; Broadcasting</p>
+            <a href="SMS.html" class="btn btn-sm">View Details</a>
+          </div>
+
+          <div class="club-card" data-category="Cultural">
+            <div class="club-logo">
+              <img src="images/art.jpg" alt="Sherubtse Art Club" />
+            </div>
+            <h4>Sherubtse Art Club</h4>
+            <p>Express creativity through Art.</p>
+            <a href="Artclub.html" class="btn btn-sm">View Details</a>
+          </div>
+        </div>
+        <button class="slider-btn next"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </section>
+
+    <section class="featured-club">
+      <div class="content">
+        <h1>Featured club: <span>UN Club</span>🌐</h1>
+        <p class="coordinator">Kelzang Wangchuk</p>
+        <div class="divider"></div>
+
+        <p class="body-text">
+          The UN club in Sherubtse College intends to give students a chance to participate in
+          simulations of meetings held and issues discussed by the United Nations.
+        </p>
+        <a href="join-club.html?club=UN%20Club" class="btn btn-primary">Join Club Now</a>
+      </div>
+
+      <div class="image-wrap">
+        <img src="images/UN_logo.jpeg" alt="UN club logo" />
+      </div>
+    </section>
+
+    <section class="upcomingevents">
+      <div class="upcoming-header">
+        <h2>Upcoming Activities</h2>
+      </div>
+
+      <div class="upcoming-layout">
+        <div class="upp-featured">
+          <article class="upp-card">
+            <div class="upp-meta">
+              <i class="far fa-calendar-alt"></i>
+              <span>March 25, 2026</span>
+            </div>
+            <h3>Model UN Conference 2026</h3>
+            <p>
+              Join us for an exciting simulation of global diplomacy. Students represent nations,
+              debate world issues, and craft resolutions — an unparalleled learning experience....
+            </p>
+          </article>
+
+          <article class="upp-card">
+            <div class="upp-meta">
+              <i class="far fa-calendar-alt"></i>
+              <span>May 10, 2026</span>
+            </div>
+            <h3>Annual Marathon</h3>
+            <p>Run for your health in the scenic trails around the Kanglung campus....</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="testimonials">
+      <h2>Student Testimonials</h2>
+      <div class="testimonial-card">
+        <div class="testimonial-image">
+          <img src="images/testimonial.jpg" alt="Tenzin Wangmo" />
+        </div>
+        <div class="testimonial-text">
+          <blockquote>"This club helped me gain confidence!"</blockquote>
+          <cite>— Tenzin Wangmo</cite>
+        </div>
+        <a
+          class="testimonial-next"
+          href="clubs.html"
+          aria-label="Explore clubs"
+          title="Explore clubs"
+          ><i class="fas fa-chevron-right"></i
+        ></a>
+      </div>
+      <a href="join-club.html" class="btn btn-orange join-cta">Join a Club Now</a>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-left">
+        <div class="footer-logo">
+          <div class="logo-circle small">
+            <img src="images/sherubtse logo.png" alt="Logo" />
+          </div>
+          <span>Sherubtse <strong>Clubs</strong></span>
+        </div>
+        <div class="footer-address">
+          <i class="fas fa-map-marker-alt"></i>
+          <div>
+            <p>Sherubtse College</p>
+            <p>Kanglung, Trashigang</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-right">
+        <div class="footer-social">
+          <h4>Contact Us</h4>
+          <div class="footer-center">
+            <p><i class="fas fa-phone"></i> 17276109/77276109</p>
+            <p><i class="fas fa-envelope"></i> Units@sherubtse.bt</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-right">
+        <div class="footer-social">
+          <h4>Follow Us</h4>
+          <div class="social-icons">
+            <a
+              href="https://www.instagram.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Instagram"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a
+              href="https://www.tiktok.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Tiktok"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a
+              href="https://www.youtube.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Youtube"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.facebook.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Facebook"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+          </div>
+          <p><a href="login.html" aria-label="Member and club leader sign in">Member / club leader sign in</a></p>
+          <p><a href="admin.html" aria-label="Administrator sign in">Administrator sign in</a></p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const homeClubCards = [...document.querySelectorAll('.discover .club-card')];
+      const clubGrid = document.querySelector('.discover .clubs-grid');
+      const emptyMessage = document.createElement('p');
+      emptyMessage.className = 'club-empty-message';
+      emptyMessage.textContent =
+        'No featured clubs in this category yet. Explore all clubs to see more.';
+      emptyMessage.hidden = true;
+      clubGrid.after(emptyMessage);
+
+      document.querySelectorAll('.discover .tab').forEach((tab) => {
+        tab.addEventListener('click', () => {
+          document
+            .querySelectorAll('.discover .tab')
+            .forEach((item) => item.classList.remove('active'));
+          tab.classList.add('active');
+          const category = tab.dataset.category;
+          homeClubCards.forEach((card) => {
+            card.hidden = category !== 'All' && card.dataset.category !== category;
+          });
+          emptyMessage.hidden = homeClubCards.some((card) => !card.hidden);
+        });
+      });
+
+      document.querySelector('.slider-btn.prev').addEventListener('click', () => {
+        clubGrid.scrollBy({ left: -clubGrid.clientWidth * 0.8, behavior: 'smooth' });
+      });
+      document.querySelector('.slider-btn.next').addEventListener('click', () => {
+        clubGrid.scrollBy({ left: clubGrid.clientWidth * 0.8, behavior: 'smooth' });
+      });
+      document.querySelector('.hamburger').addEventListener('click', function () {
+        document.querySelector('.nav-links').classList.toggle('open');
+      });
+    </script>
+  </body>
+</html>

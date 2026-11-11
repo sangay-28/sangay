@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0d1b4b" />
+    <title>Manage Accounts | Sherubtse Clubs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/admin.css" />
+    <link rel="stylesheet" href="css/workspace.css" />
+    <script src="js/admin-users.js" defer></script>
+  </head>
+  <body>
+    <header class="workspace-nav">
+      <a class="workspace-brand" href="admin.html" aria-label="Sherubtse Clubs administration">
+        <img class="workspace-mark" src="images/sherubtse%20logo.png" alt="" />
+        <span>Sherubtse <b>Clubs</b></span>
+      </a>
+      <nav class="workspace-links" aria-label="Main navigation">
+        <a href="admin.html">Dashboard</a
+        ><a href="admin-users.html" aria-current="page">Manage accounts</a>
+      </nav>
+      <div class="workspace-account">
+        <span>Clubs Office</span
+        ><button id="logoutButton" class="workspace-signout" type="button">Sign out</button>
+      </div>
+    </header>
+    <main>
+      <section class="admin-hero">
+        <div class="admin-hero-copy">
+          <p class="eyebrow">CLUBS OFFICE · ACCOUNT ADMINISTRATION</p>
+          <h1>Build stronger club teams.</h1>
+          <p class="muted">
+            Assign leaders to clubs, keep event ownership up to date, and manage account access.
+          </p>
+        </div>
+      </section>
+
+      <div class="admin-grid">
+        <section class="panel account-create">
+          <div class="panel-heading">
+            <p class="eyebrow">LEADER ACCESS</p>
+            <h2>Create a club leader</h2>
+            <p class="muted">
+              Each leader sees their assigned club’s members, applications, events, and
+              registrations.
+            </p>
+          </div>
+          <form id="leaderForm">
+            <label
+              >Leader name<input name="fullName" autocomplete="name" required maxlength="120"
+            /></label>
+            <label
+              >Email address<input
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                maxlength="254"
+            /></label>
+            <label
+              >Assigned club
+              <select name="club" required>
+                <option value="">Choose a club</option>
+                <option>Sherubtse Tarayana</option>
+                <option>Sherubtse Art Club</option>
+                <option>SMS</option>
+                <option>GNH Youth Club</option>
+                <option>Cultural Unit</option>
+                <option>Democracy Club</option>
+                <option>Y-PEER</option>
+                <option>Taekwondo Club</option>
+                <option>UN Club</option>
+              </select>
+            </label>
+            <p class="muted">
+              The leader signs in with a one-time code sent to this email. Make sure email delivery
+              is configured.
+            </p>
+            <button class="button" type="submit">Create leader account</button>
+            <p id="feedback" class="feedback" role="status"></p>
+          </form>
+        </section>
+
+        <section class="panel account-list-section">
+          <div class="panel-heading">
+            <p class="eyebrow">EVENT OWNERSHIP</p>
+            <h2>Assign events to clubs</h2>
+            <p class="muted">Leaders see events assigned to their club on their dashboard.</p>
+          </div>
+          <div id="eventList" class="submission-list"></div>
+          <p id="eventFeedback" class="feedback" role="status"></p>
+        </section>
+      </div>
+
+      <section class="account-list-section">
+        <div class="heading">
+          <div>
+            <p class="eyebrow">ACCESS CONTROL</p>
+            <h1>Club accounts</h1>
+            <p class="muted">Review accounts, update leader club assignments, or disable access.</p>
+          </div>
+        </div>
+        <div id="accountList" class="submission-list"></div>
+      </section>
+      <p id="accountFeedback" class="feedback" role="status"></p>
+    </main>
+    <footer>Built for the Sherubtse College Clubs community</footer>
+  </body>
+</html>

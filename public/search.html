@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search | Sherubtse Clubs</title>
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/events.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <style>
+      .search-page {
+        max-width: 900px;
+        margin: 3rem auto;
+        padding: 0 1.5rem;
+        min-height: 45vh;
+      }
+      .search-page h1 {
+        margin-bottom: 1rem;
+      }
+      .search-form {
+        display: flex;
+        gap: 0.75rem;
+        margin: 1.5rem 0 2rem;
+      }
+      .search-form input {
+        flex: 1;
+        min-width: 0;
+        padding: 0.9rem 1rem;
+        border: 1px solid #ccd0d9;
+        border-radius: 8px;
+        font: inherit;
+      }
+      .search-results {
+        display: grid;
+        gap: 0.8rem;
+      }
+      .search-result {
+        padding: 1rem 1.2rem;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 12px #14213d12;
+        color: inherit;
+        text-decoration: none;
+      }
+      .search-result strong {
+        display: block;
+        margin-bottom: 0.25rem;
+      }
+      .search-empty {
+        color: #666;
+      }
+      @media (max-width: 560px) {
+        .search-form {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-logo">
+        <a href="index.html"
+          ><div class="logo-circle">
+            <img src="images/sherubtse logo.png" alt="Sherubtse Clubs" /></div
+        ></a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="clubs.html">Clubs</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="About_us.html">About</a></li>
+        <li><a href="join-club.html">Join Club</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li class="mobile-search"><a href="search.html">Search</a></li>
+      </ul>
+      <a class="nav-search" href="search.html" aria-label="Search the site"
+        ><i class="fas fa-search"></i><span>Search</span></a
+      >
+      <button class="hamburger" type="button" aria-label="Open navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+    </nav>
+    <main class="search-page">
+      <h1>Search Sherubtse Clubs</h1>
+      <p>Find clubs, events, and information across the site.</p>
+      <form class="search-form" id="searchForm">
+        <input
+          id="searchQuery"
+          type="search"
+          placeholder="Search clubs or events"
+          aria-label="Search clubs or events"
+        />
+        <button class="btn-primary" type="submit">Search</button>
+      </form>
+      <div class="search-results" id="searchResults" aria-live="polite"></div>
+    </main>
+    <script src="js/site.js"></script>
+    <script src="js/search.js"></script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "name": "sherubtse-clubs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sherubtse Clubs website and application API",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "migrate:sqlite": "node scripts/migrate-sqlite-to-postgres.js",
+    "test": "node --test",
+    "format": "prettier --write \"**/*.{js,json,md,html,css}\"",
+    "format:check": "prettier --check \"**/*.{js,json,md,html,css}\""
+  },
+  "dependencies": {
+    "nodemailer": "^10.0.10",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.23.0",
+    "globals": "^16.0.0",
+    "prettier": "^3.5.3"
+  }
+}

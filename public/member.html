@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Member Dashboard | Sherubtse Clubs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/portal.css" />
+    <link rel="stylesheet" href="css/workspace.css" />
+    <script src="js/portal.js" defer></script>
+  </head>
+  <body data-role="member">
+    <header class="workspace-nav">
+      <a href="index.html" class="workspace-brand"
+        ><img class="workspace-mark" src="images/sherubtse%20logo.png" alt="" /><span
+          >Sherubtse <b>Clubs</b></span
+        ></a
+      >
+      <nav class="workspace-links" aria-label="Main navigation">
+        <a href="index.html">Home</a><a href="clubs.html">Clubs</a><a href="events.html">Events</a
+        ><a href="About_us.html">About</a><a href="contact.html">Contact</a>
+      </nav>
+      <div class="workspace-account">
+        <span id="accountName"></span
+        ><button class="workspace-signout" id="logoutButton" type="button">Sign out</button>
+      </div>
+    </header>
+    <main class="portal-main">
+      <div class="portal-heading">
+        <div>
+          <p class="eyebrow">MEMBER SPACE</p>
+          <h1>My activity</h1>
+          <p class="muted">Your club applications and event registrations.</p>
+        </div>
+        <a class="portal-button" href="join-club.html">Apply to a club</a>
+      </div>
+      <section class="portal-section">
+        <h2>Club applications</h2>
+        <div id="memberships" class="portal-list"></div>
+      </section>
+      <section class="portal-section">
+        <h2>Event registrations</h2>
+        <div id="registrations" class="portal-list"></div>
+      </section>
+      <p id="feedback" class="portal-feedback" role="status"></p>
+    </main>
+  </body>
+</html>

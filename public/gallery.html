@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Gallery | Sherubtse Clubs</title>
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/events.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <style>
+      .gallery-page {
+        max-width: 1180px;
+        margin: auto;
+        padding: 3rem 1.5rem 5rem;
+      }
+      .gallery-page h1 {
+        margin-bottom: 0.5rem;
+      }
+      .gallery-intro {
+        margin-bottom: 2rem;
+        color: #687080;
+      }
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 1rem;
+      }
+      .gallery-item {
+        overflow: hidden;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 2px 14px #14213d18;
+      }
+      .gallery-item img {
+        width: 100%;
+        height: 230px;
+        object-fit: cover;
+      }
+      .gallery-item figcaption {
+        padding: 0.85rem 1rem;
+        font-weight: 700;
+      }
+      .gallery-actions {
+        margin-top: 2rem;
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+      }
+      .gallery-empty {
+        color: #687080;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-logo">
+        <a href="index.html"
+          ><div class="logo-circle">
+            <img src="images/sherubtse logo.png" alt="Sherubtse Clubs" /></div
+        ></a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="clubs.html">Clubs</a></li>
+        <li><a href="events.html" class="active">Events</a></li>
+        <li><a href="About_us.html">About</a></li>
+        <li><a href="join-club.html">Join Club</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li class="mobile-search"><a href="search.html">Search</a></li>
+      </ul>
+      <a class="nav-search" href="search.html" aria-label="Search the site"
+        ><i class="fas fa-search"></i><span>Search</span></a
+      >
+      <button class="hamburger" type="button" aria-label="Open navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+    </nav>
+    <main class="gallery-page">
+      <a href="events.html">← All events</a>
+      <h1 id="galleryTitle">Event Gallery</h1>
+      <p class="gallery-intro" id="galleryIntro">Photos from Sherubtse College events.</p>
+      <div class="gallery-grid" id="galleryGrid"></div>
+      <div class="gallery-actions">
+        <a class="btn-primary" id="recapLink" href="events.html">View Event Recap</a>
+        <a class="btn-ghost" href="events.html">Browse Events</a>
+      </div>
+    </main>
+    <script>
+      document.querySelector('.hamburger').addEventListener('click', () => {
+        document.querySelector('.nav-links').classList.toggle('open');
+      });
+    </script>
+    <script src="js/gallery.js"></script>
+  </body>
+</html>

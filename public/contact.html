@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us Sherubtse Clubs</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/contact.css" />
+    <link rel="stylesheet" href="css/index.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-logo">
+        <div class="logo-circle">
+          <img src="images/sherubtse logo.png" alt="Logo" />
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="clubs.html">Clubs</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="About_us.html">About</a></li>
+        <li><a href="join-club.html">Join Club</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+        <li class="mobile-search"><a href="search.html">Search</a></li>
+      </ul>
+      <a class="nav-search" href="search.html" aria-label="Search the site">
+        <i class="fas fa-search"></i>
+        <span>Search</span>
+      </a>
+      <div class="hamburger"><i class="fas fa-bars"></i></div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <h1>Contact Us</h1>
+    </section>
+
+    <section class="contact-section">
+      <div class="cards-grid">
+        <div class="info-card">
+          <div class="icon-wrap">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+              />
+            </svg>
+          </div>
+          <div class="card-text">
+            <h3>Visit us</h3>
+            <p>Sherubtse, Kanglung<br />Trashigang</p>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="icon-wrap">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"
+              />
+            </svg>
+          </div>
+          <div class="card-text">
+            <h3>Email us</h3>
+            <a href="mailto:Sherubtseunits@gmail.com">Sherubtseunits@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="info-card card-full">
+          <div class="icon-wrap">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"
+              />
+            </svg>
+          </div>
+          <div class="card-text">
+            <h3>Call us</h3>
+            <p><a href="tel:17891011">17891011</a><br /><a href="tel:77891011">77891011</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-area">
+        <form id="contactForm">
+          <div class="contact-field">
+            <label for="contactName">Name</label
+            ><input id="contactName" name="name" type="text" maxlength="100" required />
+          </div>
+          <div class="contact-field">
+            <label for="contactEmail">Email</label
+            ><input id="contactEmail" name="email" type="email" maxlength="254" required />
+          </div>
+          <div class="contact-field">
+            <label for="contactSubject">Subject</label
+            ><input id="contactSubject" name="subject" type="text" maxlength="150" required />
+          </div>
+          <div class="contact-field">
+            <label for="contactMessage">Message</label
+            ><textarea
+              id="contactMessage"
+              name="message"
+              maxlength="3000"
+              rows="5"
+              required
+            ></textarea>
+          </div>
+          <div class="consent-row">
+            <input type="checkbox" id="consent" required />
+            <label for="consent">I agree to the collection of my information</label>
+          </div>
+          <p class="form-feedback" id="contactFeedback" role="status" aria-live="polite"></p>
+          <button type="submit" class="btn-send" id="sendBtn">Send Message</button>
+        </form>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-left">
+        <div class="footer-logo">
+          <div class="logo-circle small">
+            <img src="images/sherubtse logo.png" alt="Logo" />
+          </div>
+          <span>Sherubtse <strong>Clubs</strong></span>
+        </div>
+        <div class="footer-address">
+          <i class="fas fa-map-marker-alt"></i>
+          <div>
+            <p>Sherubtse College</p>
+            <p>Kanglung, Trashigang</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-right">
+        <div class="footer-social">
+          <h4>Contact Us</h4>
+          <div class="footer-center">
+            <p><i class="fas fa-phone"></i> 17276109/77276109</p>
+            <p><i class="fas fa-envelope"></i> Units@sherubtse.bt</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-right">
+        <div class="footer-social">
+          <h4>Follow Us</h4>
+          <div class="social-icons">
+            <a
+              href="https://www.instagram.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Instagram"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a
+              href="https://www.tiktok.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Tiktok"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a
+              href="https://www.youtube.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Youtube"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.facebook.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Facebook"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Tab switching
+      document.querySelectorAll('.tab').forEach((tab) => {
+        tab.addEventListener('click', function () {
+          if (!this.classList.contains('more')) {
+            document.querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
+            this.classList.add('active');
+          }
+        });
+      });
+
+      // Hamburger menu
+      document.querySelector('.hamburger').addEventListener('click', function () {
+        document.querySelector('.nav-links').classList.toggle('open');
+      });
+    </script>
+
+    <script src="js/contact.js"></script>
+  </body>
+</html>

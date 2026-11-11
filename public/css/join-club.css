@@ -1,0 +1,379 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Page wrapper ── */
+.jc-wrap {
+  font-family: 'Nunito', sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(160deg, #2a1a4e 0%, #1a0e3a 40%, #3b1a6e 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Background image overlay ── */
+.jc-bg-blur {
+  position: absolute;
+  inset: 0;
+  background: url('../images2/inline.jpeg') center / cover no-repeat;
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+/* ── Hero heading ── */
+.jc-hero {
+  text-align: center;
+  padding: 48px 20px 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.jc-hero h1 {
+  font-family: 'Cinzel', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.4);
+}
+
+.jc-hero p {
+  color: #d4b8ff;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* ── White card ── */
+.jc-card {
+  background: #fff;
+  border-radius: 18px;
+  margin: 0 auto 40px;
+  max-width: 480px;
+  padding: 32px 28px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.35);
+}
+
+/* ── Section titles ── */
+.jc-section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #3b1a6e;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  border-bottom: 1.5px solid #e8deff;
+  padding-bottom: 8px;
+}
+
+/* ── Form fields ── */
+.jc-field {
+  margin-bottom: 16px;
+}
+
+.jc-field label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #4a3a6e;
+  margin-bottom: 5px;
+  letter-spacing: 0.3px;
+}
+
+.jc-field input,
+.jc-field select {
+  width: 100%;
+  border: 1.5px solid #d4c8f0;
+  border-radius: 8px;
+  padding: 10px 13px;
+  font-size: 0.95rem;
+  font-family: 'Nunito', sans-serif;
+  color: #2a1a4e;
+  background: #faf8ff;
+  outline: none;
+  transition:
+    border 0.2s,
+    box-shadow 0.2s;
+}
+
+.jc-field input:focus,
+.jc-field select:focus {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.13);
+}
+
+.jc-field input::placeholder {
+  color: #b8b0d0;
+  font-size: 0.9rem;
+}
+
+/* ── Year select custom arrow ── */
+.jc-select-wrap {
+  position: relative;
+}
+
+.jc-select-wrap select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 36px;
+}
+
+.jc-select-wrap::after {
+  content: '▾';
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7c3aed;
+  pointer-events: none;
+  font-size: 0.9rem;
+}
+
+/* ── Fee badge ── */
+.fee-badge {
+  display: inline-block;
+  background: #fff3cd;
+  border: 1.5px solid #f0c040;
+  color: #7a4f00;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 3px 12px;
+  letter-spacing: 0.5px;
+}
+
+/* ── Divider ── */
+.jc-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #d4c8f0, transparent);
+  margin: 20px 0;
+}
+
+/* ── OTP row ── */
+.otp-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.otp-row .jc-field {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.otp-btn {
+  white-space: nowrap;
+  background: linear-gradient(135deg, #7c3aed, #4f1fa8);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  height: 42px;
+  margin-top: 5px;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+  transition:
+    opacity 0.2s,
+    transform 0.1s;
+}
+
+.otp-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.otp-btn:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+/* ── OTP status message ── */
+.otp-status {
+  font-size: 0.8rem;
+  margin-top: 4px;
+  min-height: 16px;
+}
+
+.otp-status.success {
+  color: #15803d;
+}
+.otp-status.error {
+  color: #dc2626;
+}
+.otp-status.info {
+  color: #7c3aed;
+}
+
+/* ── Small note text ── */
+.note-text {
+  font-size: 0.78rem;
+  color: #888;
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* ── Terms row ── */
+.terms-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 18px 0 22px;
+  background: #f3eeff;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.terms-row input[type='checkbox'] {
+  width: 17px;
+  height: 17px;
+  accent-color: #7c3aed;
+  flex-shrink: 0;
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+.terms-row label {
+  font-size: 0.85rem;
+  color: #4a3a6e;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.terms-row a {
+  color: #7c3aed;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.terms-row a:hover {
+  text-decoration: underline;
+}
+
+/* ── Submit button ── */
+.submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #f5c518 0%, #e0a800 100%);
+  color: #1a0e3a;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-family: 'Cinzel', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition:
+    opacity 0.2s,
+    transform 0.1s,
+    box-shadow 0.2s;
+  box-shadow: 0 4px 18px rgba(224, 168, 0, 0.25);
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.submit-btn:not(:disabled):hover {
+  box-shadow: 0 6px 24px rgba(224, 168, 0, 0.45);
+}
+
+.submit-btn:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+/* ── Field error text ── */
+.field-error {
+  font-size: 0.78rem;
+  color: #dc2626;
+  margin-top: 3px;
+}
+
+/* ── Shake animation ── */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-6px);
+  }
+  40%,
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+.shake {
+  animation: shake 0.35s;
+}
+
+/* ── Success overlay ── */
+.success-overlay {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.success-overlay.show {
+  display: flex;
+}
+
+.success-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #7c3aed, #4f1fa8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  font-size: 2rem;
+  color: #fff;
+}
+
+.success-overlay h2 {
+  font-family: 'Cinzel', serif;
+  color: #2a1a4e;
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+
+.success-overlay p {
+  color: #6b5c8a;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ── Responsive ── */
+@media (max-width: 520px) {
+  .jc-card {
+    margin: 0 12px 32px;
+    padding: 24px 18px;
+  }
+
+  .jc-hero h1 {
+    font-size: 1.7rem;
+  }
+
+  .otp-btn {
+    padding: 10px 12px;
+    font-size: 0.82rem;
+  }
+}

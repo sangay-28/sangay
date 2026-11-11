@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events & Activities – Sherubtse Clubs</title>
+    <link rel="stylesheet" href="css/events.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-logo">
+        <div class="logo-circle">
+          <img src="images/sherubtse logo.png" alt="Logo" />
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="clubs.html">Clubs</a></li>
+        <li><a href="events.html" class="active">Events</a></li>
+        <li><a href="About_us.html">About</a></li>
+        <li><a href="join-club.html">Join Club</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li class="mobile-search"><a href="search.html">Search</a></li>
+      </ul>
+      <a class="nav-search" href="search.html" aria-label="Search the site">
+        <i class="fas fa-search"></i>
+        <span>Search</span>
+      </a>
+      <div class="hamburger"><i class="fas fa-bars"></i></div>
+    </nav>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="breadcrumb">
+        <a href="events.html">Events</a><i class="fas fa-chevron-right"></i><span>Register</span>
+      </div>
+      <h1>Event <em>Registration</em></h1>
+      <p>Fill in the form below to register for an upcoming event or join a club.</p>
+    </section>
+
+    <!-- REGISTER SECTION -->
+    <section class="register-section">
+      <div class="register-layout">
+        <!-- Left: info -->
+        <div class="register-info">
+          <h2>
+            Why Join Our<br /><em style="color: var(--gold2); font-style: normal">Events?</em>
+          </h2>
+          <p>
+            Sherubtse Clubs host over 50 events annually - from academic workshops to cultural
+            nights and sports tournaments. Get involved and make your college life unforgettable.
+          </p>
+
+          <div class="benefit">
+            <div class="benefit-icon"><i class="fas fa-certificate"></i></div>
+            <div>
+              <strong>Official Certificates</strong>
+              <p>Receive participation and achievement certificates for your portfolio.</p>
+            </div>
+          </div>
+          <div class="benefit">
+            <div class="benefit-icon"><i class="fas fa-users"></i></div>
+            <div>
+              <strong>Network & Connect</strong>
+              <p>Meet like-minded peers, seniors, and faculty mentors across all departments.</p>
+            </div>
+          </div>
+          <div class="benefit">
+            <div class="benefit-icon"><i class="fas fa-trophy"></i></div>
+            <div>
+              <strong>Compete & Win</strong>
+              <p>Represent your department and win prizes in inter-club competitions.</p>
+            </div>
+          </div>
+          <div class="benefit">
+            <div class="benefit-icon"><i class="fas fa-star"></i></div>
+            <div>
+              <strong>Boost Your Profile</strong>
+              <p>Extra-curricular activities are valued in job applications and scholarships.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: form -->
+        <div class="register-form">
+          <h3>Registration Form</h3>
+
+          <form id="registerForm" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstName">First Name *</label>
+                <input type="text" id="firstName" placeholder="Tshering" required />
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name *</label>
+                <input type="text" id="lastName" placeholder="Dorji" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="studentId">Student ID *</label>
+              <input type="text" id="studentId" placeholder="e.g. 07240001" required />
+            </div>
+
+            <div class="form-group">
+              <label for="email">College Email *</label>
+              <input type="email" id="email" placeholder="you@sherubtse.edu.bt" required />
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" placeholder="+975 xxxxxxxx" />
+            </div>
+
+            <div class="form-group">
+              <label for="department">Department *</label>
+              <select id="department" required>
+                <option value="">Select your course</option>
+                <option>Data Science and Data Analytics</option>
+                <option>Mathematics</option>
+                <option>Physics</option>
+                <option>Digital Communication and Project Management</option>
+                <option>Chemistry</option>
+                <option>Economic and Political Science</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="year">Year of Study *</label>
+              <select id="year" required>
+                <option value="">Select year</option>
+                <option>1st Year</option>
+                <option>2nd Year</option>
+                <option>3rd Year</option>
+                <option>4th Year</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="eventSelect">Event to Register For *</label>
+              <select id="eventSelect" required>
+                <option value="">Select an event</option>
+                <option value="model-un">Model UN Conference 2026</option>
+                <option value="art-exhibition">Art Exhibition 2026</option>
+                <option value="culture-night">Culture Night</option>
+                <option value="indoor-tournament">Indoor Tournament 2026</option>
+                <option value="debate">Debate Competition</option>
+                <option value="marathon">Annual Marathon</option>
+                <option value="un-workshop">UN Workshop</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="role">Participation Role</label>
+              <select id="role">
+                <option value="">Select role</option>
+                <option>Participant</option>
+                <option>Volunteer</option>
+                <option>Organizer</option>
+                <option>Performer</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Additional Message (Optional)</label>
+              <textarea
+                id="message"
+                placeholder="Any special requirements or questions…"
+              ></textarea>
+            </div>
+
+            <div class="form-group form-check">
+              <input type="checkbox" id="terms" required />
+              <label for="terms"
+                >I agree to the <a href="terms.html">Terms &amp; Conditions</a> and
+                consent to my data being used for event coordination.</label
+              >
+            </div>
+
+            <button type="submit" class="btn-primary">
+              Submit Registration <i class="fas fa-arrow-right"></i>
+            </button>
+          </form>
+
+          <!-- Success message -->
+          <div class="success-msg" id="successMsg">
+            <i class="fas fa-check-circle"></i>
+            <h3>Registration Successful!</h3>
+            <p>
+              Thank you for registering. Your details have been sent to the club for event
+              coordination.
+            </p>
+            <br />
+            <a href="events.html" class="btn-primary">← Back to Events</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-left">
+        <div class="footer-logo">
+          <div class="logo-circle small">
+            <img src="images/sherubtse logo.png" alt="Logo" />
+          </div>
+          <span>Sherubtse <strong>Clubs</strong></span>
+        </div>
+        <div class="footer-address">
+          <i class="fas fa-map-marker-alt"></i>
+          <div>
+            <p>Sherubtse College</p>
+            <p>Kanglung, Trashigang</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-right">
+        <div class="footer-social">
+          <h4>Contact Us</h4>
+          <div class="footer-center">
+            <p><i class="fas fa-phone"></i> 17276109/77276109</p>
+            <p><i class="fas fa-envelope"></i> Units@sherubtse.bt</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-right">
+        <div class="footer-social">
+          <h4>Follow Us</h4>
+          <div class="social-icons">
+            <a
+              href="https://www.instagram.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Instagram"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a
+              href="https://www.tiktok.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Tiktok"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a
+              href="https://www.youtube.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Youtube"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.facebook.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open Facebook"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="js/events.js"></script>
+
+    <script src="js/register.js"></script>
+  </body>
+</html>
