@@ -1,6 +1,6 @@
 const crypto = require('node:crypto');
 const { readJson, sendJson } = require('../utils/http');
-const { consumeOtp, isDevelopmentOtpEnabled, issueOtp } = require('../utils/otp');
+const { consumeOtp, isOtpTestModeEnabled, issueOtp } = require('../utils/otp');
 const { CLUB_NAME_SET } = require('../utils/clubs');
 const { all, get, run } = require('../utils/database-query');
 
@@ -102,10 +102,9 @@ async function handleAuthRequest(request, response, database, url, sessions) {
       return sendJson(response, 200, { message: 'Signed out.' });
     }
     if (request.method === 'POST' && url.pathname === '/api/auth/request-otp') {
-      if (!isDevelopmentOtpEnabled()) {
+      if (!isOtpTestModeEnabled()) {
         return sendJson(response, 503, {
-          error:
-            'OTP codes are available only in local development. This deployment has no email delivery service configured.',
+          error: 'OTP testing mode is disabled. No email delivery service is configured.',
         });
       }
       const body = await readJson(request);
@@ -161,7 +160,7 @@ async function handleAuthRequest(request, response, database, url, sessions) {
                 'No active club leader account uses this email. Ask the Clubs Office to create or enable your leader account first.',
             });
           }
-          if (isDevelopmentOtpEnabled()) {
+          if (isOtpTestModeEnabled()) {
             return sendJson(response, 404, {
               error: 'No active member account uses this email. Create an account first.',
             });
@@ -174,15 +173,15 @@ async function handleAuthRequest(request, response, database, url, sessions) {
       const { code } = await issueOtp(database, { email, role, purpose, metadata });
       otpRequestTimes.set(rateKey, Date.now());
       return sendJson(response, 200, {
-        message: 'Development OTP generated. It expires in five minutes.',
-        developmentCode: code,
+        message:
+          'Test OTP generated. It expires in five minutes. This does not verify email ownership.',
+        testCode: code,
       });
     }
     if (request.method === 'POST' && url.pathname === '/api/auth/verify-otp') {
-      if (!isDevelopmentOtpEnabled()) {
+      if (!isOtpTestModeEnabled()) {
         return sendJson(response, 503, {
-          error:
-            'OTP verification is available only in local development. This deployment has no email delivery service configured.',
+          error: 'OTP testing mode is disabled. No email delivery service is configured.',
         });
       }
       const body = await readJson(request);

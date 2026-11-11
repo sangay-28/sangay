@@ -13,8 +13,10 @@ test('leaders only receive their assigned club data and assignment edits take ef
   const database = initializeDatabase(path.join(directory, 'test.sqlite'));
   const originalNodeEnv = process.env.NODE_ENV;
   const originalRender = process.env.RENDER;
+  const originalOtpTestMode = process.env.OTP_TEST_MODE;
   process.env.NODE_ENV = 'development';
   delete process.env.RENDER;
+  process.env.OTP_TEST_MODE = 'true';
   const originalOtpSecret = process.env.OTP_SECRET;
   process.env.OTP_SECRET = 'leader-dashboard-test-secret';
   const adminSessions = new Map([['admin-test', Date.now() + 60_000]]);
@@ -35,6 +37,8 @@ test('leaders only receive their assigned club data and assignment edits take ef
     else process.env.NODE_ENV = originalNodeEnv;
     if (originalRender === undefined) delete process.env.RENDER;
     else process.env.RENDER = originalRender;
+    if (originalOtpTestMode === undefined) delete process.env.OTP_TEST_MODE;
+    else process.env.OTP_TEST_MODE = originalOtpTestMode;
   });
 
   async function request(url, { method = 'GET', body, cookie, redirect } = {}) {

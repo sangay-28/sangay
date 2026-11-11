@@ -17,12 +17,12 @@ async function sendCode() {
   if (!response.ok) throw new Error(result.error || 'Could not send a verification code.');
   registerForm.hidden = true;
   verifyForm.hidden = false;
-  const developmentCode = typeof result.developmentCode === 'string';
-  document.getElementById('codeSentTo').textContent = developmentCode
-    ? `Development verification code: ${result.developmentCode}. It expires in five minutes.`
+  const testCode = typeof result.testCode === 'string';
+  document.getElementById('codeSentTo').textContent = testCode
+    ? `TEST MODE — verification code: ${result.testCode}. Expires in five minutes. This code does not verify email ownership.`
     : `Enter the verification code sent to ${signupData.email}.`;
   verifyForm.elements.code.focus();
-  return developmentCode;
+  return testCode;
 }
 
 registerForm.addEventListener('submit', async (event) => {
@@ -35,9 +35,9 @@ registerForm.addEventListener('submit', async (event) => {
   button.disabled = true;
   feedback.textContent = 'Sending verification code…';
   try {
-    const developmentCode = await sendCode();
-    feedback.textContent = developmentCode
-      ? 'Development mode is active. Copy the code shown above into the verification field.'
+    const testCode = await sendCode();
+    feedback.textContent = testCode
+      ? 'OTP test mode is active. Copy the code shown above. This is not proof of email ownership.'
       : '';
   } catch (error) {
     feedback.textContent = error.message;
@@ -75,9 +75,9 @@ document.getElementById('resendButton').addEventListener('click', async () => {
   const button = document.getElementById('resendButton');
   button.disabled = true;
   try {
-    const developmentCode = await sendCode();
-    feedback.textContent = developmentCode
-      ? 'A new development code is shown above.'
+    const testCode = await sendCode();
+    feedback.textContent = testCode
+      ? 'A new test code is shown above.'
       : 'A new code has been sent.';
   } catch (error) {
     feedback.textContent = error.message;

@@ -7,17 +7,19 @@ const test = require('node:test');
 const { createApplication } = require('../app');
 const { initializeDatabase } = require('../config/database');
 
-test('development OTP registration and login are secure and production fails closed', async (suite) => {
+test('OTP test mode supports registration and login when enabled and fails closed when disabled', async (suite) => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'clubs-otp-'));
   const database = initializeDatabase(path.join(directory, 'test.sqlite'));
   const originalEnvironment = {
     NODE_ENV: process.env.NODE_ENV,
     RENDER: process.env.RENDER,
     OTP_SECRET: process.env.OTP_SECRET,
+    OTP_TEST_MODE: process.env.OTP_TEST_MODE,
   };
-  process.env.NODE_ENV = 'development';
-  delete process.env.RENDER;
+  process.env.NODE_ENV = 'production';
+  process.env.RENDER = 'true';
   process.env.OTP_SECRET = 'otp-test-secret-with-enough-entropy';
+  process.env.OTP_TEST_MODE = 'false';
 
   const server = require('node:http').createServer(createApplication(database, process.cwd()));
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
@@ -56,13 +58,12 @@ test('development OTP registration and login are secure and production fails clo
     role: 'member',
   });
 
-  process.env.NODE_ENV = 'production';
   const productionRequest = await post(
     '/api/auth/request-otp',
     signup('production@example.com', 'Production User'),
   );
   assert.equal(productionRequest.status, 503);
-  assert.equal('developmentCode' in productionRequest.body, false);
+  assert.equal('testCode' in productionRequest.body, false);
   assert.equal(database.prepare('SELECT COUNT(*) AS count FROM otp_challenges').get().count, 0);
   const productionVerify = await post('/api/auth/verify-otp', {
     email: 'production@example.com',
@@ -72,32 +73,35 @@ test('development OTP registration and login are secure and production fails clo
   });
   assert.equal(productionVerify.status, 503);
 
-  process.env.NODE_ENV = 'development';
+  process.env.OTP_TEST_MODE = 'true';
   const firstEmail = 'first-student@example.com';
   const firstRequest = await post('/api/auth/request-otp', signup(firstEmail, 'First Student'));
   assert.equal(firstRequest.status, 200);
-  assert.match(firstRequest.body.developmentCode, /^\d{6}$/);
-  assert.equal(firstRequest.body.message, 'Development OTP generated. It expires in five minutes.');
+  assert.match(firstRequest.body.testCode, /^\d{6}$/);
+  assert.equal(
+    firstRequest.body.message,
+    'Test OTP generated. It expires in five minutes. This does not verify email ownership.',
+  );
   let firstChallenge = database
     .prepare('SELECT * FROM otp_challenges WHERE email=? AND purpose=?')
     .get(firstEmail, 'signup');
-  assert.notEqual(firstChallenge.code_hash, firstRequest.body.developmentCode);
+  assert.notEqual(firstChallenge.code_hash, firstRequest.body.testCode);
   assert.match(firstChallenge.code_hash, /^[a-f\d]{64}$/);
   assert.ok(firstChallenge.expires_at > Date.now());
 
   const cooldownRequest = await post('/api/auth/request-otp', signup(firstEmail, 'First Student'));
   assert.equal(cooldownRequest.status, 429);
-  assert.equal('developmentCode' in cooldownRequest.body, false);
+  assert.equal('testCode' in cooldownRequest.body, false);
 
   const otherEmail = 'other-student@example.com';
   const otherRequest = await post('/api/auth/request-otp', signup(otherEmail, 'Other Student'));
   assert.equal(otherRequest.status, 200);
   const otherCode =
-    otherRequest.body.developmentCode === firstRequest.body.developmentCode
-      ? firstRequest.body.developmentCode === '111111'
+    otherRequest.body.testCode === firstRequest.body.testCode
+      ? firstRequest.body.testCode === '111111'
         ? '222222'
         : '111111'
-      : otherRequest.body.developmentCode;
+      : otherRequest.body.testCode;
   const otherCodeHash = crypto
     .createHmac('sha256', process.env.OTP_SECRET)
     .update(`${otherEmail}:member:signup:${otherCode}`)
@@ -110,7 +114,7 @@ test('development OTP registration and login are secure and production fails clo
     email: otherEmail,
     purpose: 'signup',
     role: 'member',
-    code: firstRequest.body.developmentCode,
+    code: firstRequest.body.testCode,
   });
   assert.equal(crossEmailAttempt.status, 400);
   const otherVerified = await post('/api/auth/verify-otp', {
@@ -122,7 +126,7 @@ test('development OTP registration and login are secure and production fails clo
   assert.equal(otherVerified.status, 201);
   assert.equal(otherVerified.body.account.email, otherEmail);
 
-  const wrongCode = firstRequest.body.developmentCode === '000000' ? '000001' : '000000';
+  const wrongCode = firstRequest.body.testCode === '000000' ? '000001' : '000000';
   const wrongAttempt = await post('/api/auth/verify-otp', {
     email: firstEmail,
     purpose: 'signup',
@@ -134,7 +138,7 @@ test('development OTP registration and login are secure and production fails clo
     email: firstEmail,
     purpose: 'signup',
     role: 'member',
-    code: firstRequest.body.developmentCode,
+    code: firstRequest.body.testCode,
   });
   assert.equal(firstVerified.status, 201);
   assert.equal(firstVerified.body.account.email, firstEmail);
@@ -147,7 +151,7 @@ test('development OTP registration and login are secure and production fails clo
     email: firstEmail,
     purpose: 'signup',
     role: 'member',
-    code: firstRequest.body.developmentCode,
+    code: firstRequest.body.testCode,
   });
   assert.equal(replay.status, 400);
 
@@ -157,12 +161,12 @@ test('development OTP registration and login are secure and production fails clo
     purpose: 'login',
   });
   assert.equal(loginRequest.status, 200);
-  assert.match(loginRequest.body.developmentCode, /^\d{6}$/);
+  assert.match(loginRequest.body.testCode, /^\d{6}$/);
   const login = await post('/api/auth/verify-otp', {
     email: firstEmail,
     role: 'member',
     purpose: 'login',
-    code: loginRequest.body.developmentCode,
+    code: loginRequest.body.testCode,
   });
   assert.equal(login.status, 200);
   assert.equal(login.body.account.email, firstEmail);
@@ -192,7 +196,7 @@ test('development OTP registration and login are secure and production fails clo
     '/api/auth/request-otp',
     signup(rateLimitedEmail, 'Rate Limited'),
   );
-  const invalidCode = rateLimitedRequest.body.developmentCode === '000000' ? '000001' : '000000';
+  const invalidCode = rateLimitedRequest.body.testCode === '000000' ? '000001' : '000000';
   let lastAttempt;
   for (let attempt = 0; attempt < 10; attempt += 1) {
     lastAttempt = await post('/api/auth/verify-otp', {

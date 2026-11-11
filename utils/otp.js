@@ -17,16 +17,16 @@ function codeHash(email, role, purpose, code) {
     .digest('hex');
 }
 
-function isDevelopmentOtpEnabled() {
-  return process.env.NODE_ENV === 'development' && process.env.RENDER !== 'true';
+function isOtpTestModeEnabled() {
+  return process.env.OTP_TEST_MODE === 'true';
 }
 
 async function issueOtp(database, { email, role, purpose, metadata = null }) {
-  if (!isDevelopmentOtpEnabled()) {
+  if (!isOtpTestModeEnabled()) {
     const error = new Error(
-      'OTP codes are available only in local development. This deployment has no email delivery service configured.',
+      'OTP testing mode is disabled. Set OTP_TEST_MODE=true only for private testing; this does not verify email ownership.',
     );
-    error.code = 'EOTP_DEVELOPMENT_ONLY';
+    error.code = 'EOTP_TEST_MODE_DISABLED';
     error.statusCode = 503;
     throw error;
   }
@@ -84,4 +84,4 @@ async function consumeOtp(database, { email, role, purpose, code }) {
   return { metadata: challenge.metadata ? JSON.parse(challenge.metadata) : null };
 }
 
-module.exports = { consumeOtp, isDevelopmentOtpEnabled, issueOtp };
+module.exports = { consumeOtp, isOtpTestModeEnabled, issueOtp };

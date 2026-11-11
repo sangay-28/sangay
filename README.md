@@ -15,7 +15,7 @@ A static HTML/CSS/JavaScript website with a small Node.js API for event registra
 config/          PostgreSQL setup and legacy SQLite initialization for tests/import
 controllers/     Submission business logic
 routes/          API and role-specific routing
-utils/           HTTP, email, OTP, and request helpers
+utils/           HTTP, OTP, and request helpers
 public/          Static frontend served by the Node.js app
   *.html         Site, account, and admin pages
   css/           Stylesheets
@@ -50,11 +50,11 @@ Open <http://localhost:3000>. The PostgreSQL schema and initial club/event recor
 
 On Windows, run `start.cmd` from the project folder if PowerShell blocks the `npm` command.
 
-Run `npm run dev` to use development-only OTP verification. The server returns the generated six-digit code to the local verification page; codes expire after five minutes, are stored only as keyed hashes, and allow five incorrect attempts. OTP requests have a one-minute cooldown and verification requests are rate-limited. OTP generation and verification are disabled unless `NODE_ENV=development`; they are also disabled on Render even if that variable is set there. This is for local testing only, not real email verification. Production registration and login require a real email delivery service, which is intentionally not configured in this development-only setup. Administrator sign-in uses `ADMIN_EMAIL` and `ADMIN_PASSWORD`; it does not require email delivery. Admin submissions are at <http://localhost:3000/admin.html>; account provisioning is at <http://localhost:3000/admin-users.html>. Admin and portal sessions use HTTP-only, same-site cookies and expire after eight hours. Admins can create and disable accounts, review up to 500 recent submissions per type, and update their statuses. Form terms links open `terms.html`.
+OTP codes are disabled by default. For private testing only, set `OTP_TEST_MODE=true` in the server environment; the app then displays six-digit codes on the verification page, including on Render. Codes expire after five minutes, are stored only as keyed hashes, allow five incorrect attempts, and are subject to request cooldown and rate limits. **A code displayed by test mode does not prove email ownership. Do not enable `OTP_TEST_MODE` on a public production service.** Set it to `false` (or remove it) when testing is over. Without test mode or a real email delivery service, registration/login code requests return an error. Administrator sign-in uses `ADMIN_EMAIL` and `ADMIN_PASSWORD`; it does not require email delivery. Admin submissions are at <http://localhost:3000/admin.html>; account provisioning is at <http://localhost:3000/admin-users.html>. Admin and portal sessions use HTTP-only, same-site cookies and expire after eight hours. Admins can create and disable accounts, review up to 500 recent submissions per type, and update their statuses. Form terms links open `terms.html`.
 
-Members create accounts at <http://localhost:3000/member-register.html> and sign in at <http://localhost:3000/login.html> using development-only one-time codes. The Clubs Office can create leaders, reassign their clubs, and assign events to clubs from the account management page. Leaders land on a separate dashboard showing that club's approved members, applications, assigned events, and event registrations. Membership applications and event registrations are filtered on the backend using the leader's current club assignment. OTP codes are single-use, expire after five minutes, and allow up to five verification attempts. Existing anonymous form submissions remain available, while submissions made during a member session are linked to that account.
+Members create accounts at <http://localhost:3000/member-register.html> and sign in at <http://localhost:3000/login.html> using OTP codes when test mode is enabled. The Clubs Office can create leaders, reassign their clubs, and assign events to clubs from the account management page. Leaders land on a separate dashboard showing that club's approved members, applications, assigned events, and event registrations. Membership applications and event registrations are filtered on the backend using the leader's current club assignment. OTP codes are single-use, expire after five minutes, and allow up to five verification attempts. Existing anonymous form submissions remain available, while submissions made during a member session are linked to that account.
 
-The development-only OTP system does not send email. The app does not process payments. The membership application form does not request bank details.
+The OTP test mode does not send email. The app does not process payments. The membership application form does not request bank details.
 
 ## API
 
@@ -70,7 +70,7 @@ All request bodies use JSON. Successful submissions return HTTP `201` with a gen
 | `POST`  | `/api/admin/logout`                                   | End the current admin session                                |
 | `GET`   | `/api/admin/submissions`                              | List recent submissions (admin session required)             |
 | `PATCH` | `/api/admin/{contacts,memberships,registrations}/:id` | Update a submission status (admin session required)          |
-| `POST`  | `/api/auth/request-otp`                               | Generate a development-only member/leader OTP                |
+| `POST`  | `/api/auth/request-otp`                               | Generate a test member/leader OTP when `OTP_TEST_MODE=true`  |
 | `POST`  | `/api/auth/verify-otp`                                | Verify a code and create the session/account                 |
 | `POST`  | `/api/auth/logout`                                    | End a member or leader session                               |
 | `GET`   | `/api/member/dashboard`                               | Get the signed-in member's submissions                       |
