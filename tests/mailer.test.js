@@ -2,10 +2,11 @@ const assert = require('node:assert/strict');
 const { test } = require('node:test');
 const { sendLoginCode } = require('../utils/mailer');
 
-function setResendEnvironment(t, values) {
+function setBrevoEnvironment(t, values) {
   const previous = {
-    RESEND_API_KEY: process.env.RESEND_API_KEY,
-    RESEND_FROM: process.env.RESEND_FROM,
+    BREVO_API_KEY: process.env.BREVO_API_KEY,
+    BREVO_FROM_EMAIL: process.env.BREVO_FROM_EMAIL,
+    BREVO_FROM_NAME: process.env.BREVO_FROM_NAME,
   };
   for (const key of Object.keys(previous)) {
     if (values[key] === undefined) delete process.env[key];
@@ -19,57 +20,71 @@ function setResendEnvironment(t, values) {
   });
 }
 
-test('requires the Resend API key and sender configuration', async (t) => {
-  setResendEnvironment(t, {});
+function createMailerClient(sendTransacEmail) {
+  return { transactionalEmails: { sendTransacEmail } };
+}
+
+test('requires a Brevo API key and sender address', async (t) => {
+  setBrevoEnvironment(t, {});
   await assert.rejects(sendLoginCode('student@example.com', '123456', 'signup'), {
     code: 'EEMAILCONFIG',
     statusCode: 503,
   });
 });
 
-test('turns Resend testing-recipient rejection into an actionable error', async (t) => {
-  setResendEnvironment(t, {
-    RESEND_API_KEY: 're_test_key',
-    RESEND_FROM: 'onboarding@resend.dev',
+test('sends the OTP to the requested recipient using the verified sender settings', async (t) => {
+  setBrevoEnvironment(t, {
+    BREVO_API_KEY: 'brevo_test_key',
+    BREVO_FROM_EMAIL: 'verified@example.com',
+    BREVO_FROM_NAME: 'Sherubtse Clubs',
   });
-  t.mock.method(global, 'fetch', async (url, options) => {
-    assert.equal(url, 'https://api.resend.com/emails');
-    assert.equal(options.headers.get('authorization'), 'Bearer re_test_key');
-    const payload = JSON.parse(options.body);
-    assert.equal(payload.from, 'onboarding@resend.dev');
-    assert.deepEqual(payload.to, ['student@example.com']);
-    return new Response(
-      JSON.stringify({
-        statusCode: 403,
-        message: 'You can only send testing emails to your own email address (owner@example.com).',
-      }),
-      { status: 403, headers: { 'content-type': 'application/json' } },
-    );
+  let sentPayload;
+  const client = createMailerClient(async (payload) => {
+    sentPayload = payload;
+    return { messageId: 'brevo-message-id' };
   });
 
-  await assert.rejects(sendLoginCode('student@example.com', '123456', 'signup'), (error) => {
-    assert.equal(error.code, 'ERESEND_TEST_RECIPIENT');
+  await assert.doesNotReject(sendLoginCode('student@example.com', '123456', 'signup', client));
+  assert.deepEqual(sentPayload.sender, {
+    email: 'verified@example.com',
+    name: 'Sherubtse Clubs',
+  });
+  assert.deepEqual(sentPayload.to, [{ email: 'student@example.com' }]);
+  assert.match(sentPayload.textContent, /123456/);
+  assert.match(sentPayload.textContent, /expires in 5 minutes/);
+});
+
+test('returns a clear sender-verification error and redacts API keys', async (t) => {
+  setBrevoEnvironment(t, {
+    BREVO_API_KEY: 'brevo_private_test_key',
+    BREVO_FROM_EMAIL: 'unverified@example.com',
+  });
+  const providerError = Object.assign(
+    new Error('Sender email brevo_private_test_key is not verified.'),
+    { statusCode: 400 },
+  );
+  const client = createMailerClient(async () => {
+    throw providerError;
+  });
+
+  await assert.rejects(sendLoginCode('student@example.com', '123456', 'login', client), (error) => {
+    assert.equal(error.code, 'EBREVO_SENDER');
     assert.equal(error.statusCode, 503);
-    assert.match(error.message, /only delivers to the email address on your Resend account/);
-    assert.doesNotMatch(error.message, /owner@example\.com/);
+    assert.match(error.message, /Verify BREVO_FROM_EMAIL/);
+    assert.doesNotMatch(error.message, /brevo_private_test_key/);
     return true;
   });
 });
 
-test('treats only a confirmed Resend email id as a successful send', async (t) => {
-  setResendEnvironment(t, {
-    RESEND_API_KEY: 're_test_key',
-    RESEND_FROM: 'onboarding@resend.dev',
+test('does not report success if Brevo gives no message ID', async (t) => {
+  setBrevoEnvironment(t, {
+    BREVO_API_KEY: 'brevo_test_key',
+    BREVO_FROM_EMAIL: 'verified@example.com',
   });
-  t.mock.method(
-    global,
-    'fetch',
-    async () =>
-      new Response(JSON.stringify({ id: 'email_test_id' }), {
-        status: 200,
-        headers: { 'content-type': 'application/json' },
-      }),
-  );
+  const client = createMailerClient(async () => ({ messageId: undefined }));
 
-  await assert.doesNotReject(sendLoginCode('owner@example.com', '123456', 'login'));
+  await assert.rejects(sendLoginCode('student@example.com', '123456', 'login', client), {
+    code: 'EBREVO_UNCONFIRMED',
+    statusCode: 503,
+  });
 });

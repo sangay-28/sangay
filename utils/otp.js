@@ -46,7 +46,7 @@ async function issueOtp(database, { email, role, purpose, metadata = null }) {
   } catch (error) {
     await run(database, 'DELETE FROM otp_challenges WHERE id=?', [Number(result.lastInsertRowid)]);
     const deliveryError =
-      (typeof error.code === 'string' && error.code.startsWith('ERESEND')) ||
+      (typeof error.code === 'string' && error.code.startsWith('EBREVO')) ||
       error.code === 'EEMAILCONFIG'
         ? error
         : Object.assign(
