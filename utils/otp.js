@@ -1,5 +1,4 @@
 const crypto = require('node:crypto');
-const { sendLoginCode } = require('./mailer');
 const { get, run } = require('./database-query');
 
 const CODE_TTL_MS = 5 * 60 * 1000;
@@ -18,7 +17,20 @@ function codeHash(email, role, purpose, code) {
     .digest('hex');
 }
 
+function isDevelopmentOtpEnabled() {
+  return process.env.NODE_ENV === 'development' && process.env.RENDER !== 'true';
+}
+
 async function issueOtp(database, { email, role, purpose, metadata = null }) {
+  if (!isDevelopmentOtpEnabled()) {
+    const error = new Error(
+      'OTP codes are available only in local development. This deployment has no email delivery service configured.',
+    );
+    error.code = 'EOTP_DEVELOPMENT_ONLY';
+    error.statusCode = 503;
+    throw error;
+  }
+
   const code = String(crypto.randomInt(0, 1_000_000)).padStart(6, '0');
   await run(database, 'DELETE FROM otp_challenges WHERE email=? AND role=? AND purpose=?', [
     email,
@@ -28,7 +40,7 @@ async function issueOtp(database, { email, role, purpose, metadata = null }) {
   await run(database, 'DELETE FROM otp_challenges WHERE expires_at < ?', [
     Date.now() - 24 * 60 * 60 * 1000,
   ]);
-  const result = await run(
+  await run(
     database,
     `INSERT INTO otp_challenges (email,role,purpose,code_hash,metadata,expires_at)
     VALUES (?,?,?,?,?,?) RETURNING id`,
@@ -41,25 +53,7 @@ async function issueOtp(database, { email, role, purpose, metadata = null }) {
       Date.now() + CODE_TTL_MS,
     ],
   );
-  try {
-    await sendLoginCode(email, code, purpose);
-  } catch (error) {
-    await run(database, 'DELETE FROM otp_challenges WHERE id=?', [Number(result.lastInsertRowid)]);
-    const deliveryError =
-      (typeof error.code === 'string' && error.code.startsWith('EBREVO')) ||
-      error.code === 'EEMAILCONFIG'
-        ? error
-        : Object.assign(
-            new Error('The verification email could not be sent. Please try again later.'),
-            { code: 'EEMAILDELIVERY', statusCode: 503 },
-          );
-    console.error(
-      'Verification email delivery failed:',
-      deliveryError.code || 'EEMAILDELIVERY',
-      deliveryError.message,
-    );
-    throw deliveryError;
-  }
+  return { code };
 }
 
 async function consumeOtp(database, { email, role, purpose, code }) {
@@ -90,4 +84,4 @@ async function consumeOtp(database, { email, role, purpose, code }) {
   return { metadata: challenge.metadata ? JSON.parse(challenge.metadata) : null };
 }
 
-module.exports = { consumeOtp, issueOtp };
+module.exports = { consumeOtp, isDevelopmentOtpEnabled, issueOtp };

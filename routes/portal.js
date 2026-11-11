@@ -1,12 +1,31 @@
 const crypto = require('node:crypto');
 const { readJson, sendJson } = require('../utils/http');
-const { consumeOtp, issueOtp } = require('../utils/otp');
+const { consumeOtp, isDevelopmentOtpEnabled, issueOtp } = require('../utils/otp');
 const { CLUB_NAME_SET } = require('../utils/clubs');
 const { all, get, run } = require('../utils/database-query');
 
 const SESSION_MS = 8 * 60 * 60 * 1000;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const otpRequestTimes = new Map();
+const otpVerificationWindows = new Map();
+const OTP_REQUEST_COOLDOWN_MS = 60_000;
+const OTP_VERIFY_WINDOW_MS = 60_000;
+const OTP_VERIFY_REQUEST_LIMIT = 10;
+
+function isOtpVerificationRateLimited(key) {
+  const now = Date.now();
+  for (const [entryKey, entry] of otpVerificationWindows) {
+    if (entry.resetAt <= now) otpVerificationWindows.delete(entryKey);
+  }
+  let entry = otpVerificationWindows.get(key);
+  if (!entry || entry.resetAt <= now) {
+    entry = { count: 0, resetAt: now + OTP_VERIFY_WINDOW_MS };
+    otpVerificationWindows.set(key, entry);
+  }
+  if (entry.count >= OTP_VERIFY_REQUEST_LIMIT) return true;
+  entry.count += 1;
+  return false;
+}
 
 function createPortalSessions() {
   return new Map();
@@ -83,6 +102,12 @@ async function handleAuthRequest(request, response, database, url, sessions) {
       return sendJson(response, 200, { message: 'Signed out.' });
     }
     if (request.method === 'POST' && url.pathname === '/api/auth/request-otp') {
+      if (!isDevelopmentOtpEnabled()) {
+        return sendJson(response, 503, {
+          error:
+            'OTP codes are available only in local development. This deployment has no email delivery service configured.',
+        });
+      }
       const body = await readJson(request);
       const email = String(body.email || '')
         .trim()
@@ -98,7 +123,7 @@ async function handleAuthRequest(request, response, database, url, sessions) {
         return sendJson(response, 400, { error: 'Enter a valid email address and account type.' });
       }
       const rateKey = `${request.socket.remoteAddress || 'unknown'}:${purpose}:${email}`;
-      if (Date.now() - (otpRequestTimes.get(rateKey) || 0) < 60_000) {
+      if (Date.now() - (otpRequestTimes.get(rateKey) || 0) < OTP_REQUEST_COOLDOWN_MS) {
         return sendJson(response, 429, {
           error: 'Wait one minute before requesting another code.',
         });
@@ -136,21 +161,30 @@ async function handleAuthRequest(request, response, database, url, sessions) {
                 'No active club leader account uses this email. Ask the Clubs Office to create or enable your leader account first.',
             });
           }
+          if (isDevelopmentOtpEnabled()) {
+            return sendJson(response, 404, {
+              error: 'No active member account uses this email. Create an account first.',
+            });
+          }
           return sendJson(response, 200, {
             message: 'If that account is active, a sign-in code has been sent.',
           });
         }
       }
-      await issueOtp(database, { email, role, purpose, metadata });
+      const { code } = await issueOtp(database, { email, role, purpose, metadata });
       otpRequestTimes.set(rateKey, Date.now());
       return sendJson(response, 200, {
-        message:
-          purpose === 'signup'
-            ? 'A verification code was sent to your email.'
-            : 'If that account is active, a sign-in code has been sent.',
+        message: 'Development OTP generated. It expires in five minutes.',
+        developmentCode: code,
       });
     }
     if (request.method === 'POST' && url.pathname === '/api/auth/verify-otp') {
+      if (!isDevelopmentOtpEnabled()) {
+        return sendJson(response, 503, {
+          error:
+            'OTP verification is available only in local development. This deployment has no email delivery service configured.',
+        });
+      }
       const body = await readJson(request);
       const email = String(body.email || '')
         .trim()
@@ -165,6 +199,12 @@ async function handleAuthRequest(request, response, database, url, sessions) {
         !/^\d{6}$/.test(code)
       ) {
         return sendJson(response, 400, { error: 'Enter the six-digit code sent to your email.' });
+      }
+      const verifyRateKey = `${request.socket.remoteAddress || 'unknown'}:${email}:${role}:${purpose}`;
+      if (isOtpVerificationRateLimited(verifyRateKey)) {
+        return sendJson(response, 429, {
+          error: 'Too many verification attempts. Wait one minute and try again.',
+        });
       }
       const verified = await consumeOtp(database, { email, role, purpose, code });
       if (!verified)

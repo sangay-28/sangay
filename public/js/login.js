@@ -19,9 +19,12 @@ async function sendCode() {
   if (!response.ok) throw new Error(result.error || 'Could not send a code.');
   loginForm.hidden = true;
   verifyForm.hidden = false;
-  document.getElementById('codeSentTo').textContent =
-    `Enter the verification code sent to ${pendingEmail}.`;
+  const developmentCode = typeof result.developmentCode === 'string';
+  document.getElementById('codeSentTo').textContent = developmentCode
+    ? `Development verification code: ${result.developmentCode}. It expires in five minutes.`
+    : `Enter the verification code sent to ${pendingEmail}.`;
   verifyForm.elements.code.focus();
+  return developmentCode;
 }
 
 document.querySelectorAll('.role').forEach((button) =>
@@ -45,9 +48,10 @@ loginForm.addEventListener('submit', async (event) => {
   feedback.textContent = 'Sending a verification code…';
   button.disabled = true;
   try {
-    await sendCode();
-    feedback.textContent =
-      'Check your inbox and spam folder. New members must create an account first; club leader accounts are created by an administrator.';
+    const developmentCode = await sendCode();
+    feedback.textContent = developmentCode
+      ? 'Development mode is active. Copy the code shown above into the verification field.'
+      : 'Check your inbox and spam folder. New members must create an account first; club leader accounts are created by an administrator.';
   } catch (error) {
     feedback.textContent = error.message;
   } finally {
@@ -84,8 +88,10 @@ document.getElementById('resendButton').addEventListener('click', async () => {
   const button = document.getElementById('resendButton');
   button.disabled = true;
   try {
-    await sendCode();
-    feedback.textContent = 'A new code has been sent.';
+    const developmentCode = await sendCode();
+    feedback.textContent = developmentCode
+      ? 'A new development code is shown above.'
+      : 'A new code has been sent.';
   } catch (error) {
     feedback.textContent = error.message;
   } finally {

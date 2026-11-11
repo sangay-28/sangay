@@ -9,14 +9,13 @@
   },
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js",
+    "dev": "node --watch scripts/dev-server.js",
     "migrate:sqlite": "node scripts/migrate-sqlite-to-postgres.js",
     "test": "node --test",
     "format": "prettier --write \"**/*.{js,json,md,html,css}\"",
     "format:check": "prettier --check \"**/*.{js,json,md,html,css}\""
   },
   "dependencies": {
-    "@getbrevo/brevo": "^6.2.0",
     "pg": "^8.23.1"
   },
   "devDependencies": {
