@@ -15,15 +15,15 @@ async function sendCode() {
   });
   const result = await response.json();
   if (!response.ok) throw new Error(result.error || 'Could not send a verification code.');
-  if (typeof result.testCode !== 'string' || !/^\d{6}$/.test(result.testCode)) {
-    throw new Error('The server did not provide a test code. No email was sent. Check OTP_TEST_MODE in Render.');
+  if (result.emailAccepted !== true) {
+    throw new Error(result.error || 'Email delivery was not confirmed. No code was sent.');
   }
   registerForm.hidden = true;
   verifyForm.hidden = false;
   document.getElementById('codeSentTo').textContent =
-    `TEST MODE - verification code: ${result.testCode}. Expires in five minutes. This code does not verify email ownership.`;
+    `Gmail accepted the verification email for sending to ${signupData.email}. Check your inbox and spam folder.`;
   verifyForm.elements.code.focus();
-  return true;
+  window.startOtpTimers(result.expiresInSeconds, result.resendAfterSeconds);
 }
 
 registerForm.addEventListener('submit', async (event) => {
@@ -36,10 +36,8 @@ registerForm.addEventListener('submit', async (event) => {
   button.disabled = true;
   feedback.textContent = 'Sending verification code…';
   try {
-    const testCode = await sendCode();
-    feedback.textContent = testCode
-      ? 'Your verification code is ready. Enter the code displayed below.'
-      : '';
+    await sendCode();
+    feedback.textContent = 'Gmail accepted the verification email for sending.';
   } catch (error) {
     feedback.textContent = error.message;
   } finally {
@@ -76,13 +74,10 @@ document.getElementById('resendButton').addEventListener('click', async () => {
   const button = document.getElementById('resendButton');
   button.disabled = true;
   try {
-    const testCode = await sendCode();
-    feedback.textContent = testCode
-      ? 'Your new verification code is ready. Enter the code displayed above.'
-      : '';
+    await sendCode();
+    feedback.textContent = 'Gmail accepted the new verification email for sending.';
   } catch (error) {
     feedback.textContent = error.message;
-  } finally {
     button.disabled = false;
   }
 });

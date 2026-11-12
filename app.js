@@ -53,7 +53,14 @@ function createApplication(database, publicRoot, options = {}) {
         return;
       }
       if (url.pathname.startsWith('/api/auth/')) {
-        await handleAuthRequest(request, response, database, url, portalSessions);
+        await handleAuthRequest(
+          request,
+          response,
+          database,
+          url,
+          portalSessions,
+          options.sendOtpEmail,
+        );
         return;
       }
       if (url.pathname.startsWith('/api/leader/') || url.pathname.startsWith('/api/member/')) {

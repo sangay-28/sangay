@@ -17,15 +17,15 @@ async function sendCode() {
   });
   const result = await response.json();
   if (!response.ok) throw new Error(result.error || 'Could not send a code.');
-  if (typeof result.testCode !== 'string' || !/^\d{6}$/.test(result.testCode)) {
-    throw new Error('The server did not provide a test code. No email was sent. Check OTP_TEST_MODE in Render.');
+  if (result.emailAccepted !== true) {
+    throw new Error(result.error || 'Email delivery was not confirmed. No code was sent.');
   }
   loginForm.hidden = true;
   verifyForm.hidden = false;
   document.getElementById('codeSentTo').textContent =
-    `TEST MODE - verification code: ${result.testCode}. Expires in five minutes. This code does not verify email ownership.`;
+    `Gmail accepted the verification email for sending to ${pendingEmail}. Check your inbox and spam folder.`;
   verifyForm.elements.code.focus();
-  return true;
+  window.startOtpTimers(result.expiresInSeconds, result.resendAfterSeconds);
 }
 
 document.querySelectorAll('.role').forEach((button) =>
@@ -49,10 +49,9 @@ loginForm.addEventListener('submit', async (event) => {
   feedback.textContent = 'Sending a verification code…';
   button.disabled = true;
   try {
-    const testCode = await sendCode();
-    feedback.textContent = testCode
-      ? 'Your verification code is ready. Enter the code displayed below.'
-      : '';
+    await sendCode();
+    feedback.textContent =
+      'Gmail accepted the verification email for sending. New members must create an account first; club leader accounts are created by an administrator.';
   } catch (error) {
     feedback.textContent = error.message;
   } finally {
@@ -89,13 +88,10 @@ document.getElementById('resendButton').addEventListener('click', async () => {
   const button = document.getElementById('resendButton');
   button.disabled = true;
   try {
-    const testCode = await sendCode();
-    feedback.textContent = testCode
-      ? 'Your new verification code is ready. Enter the code displayed above.'
-      : '';
+    await sendCode();
+    feedback.textContent = 'Gmail accepted the new verification email for sending.';
   } catch (error) {
     feedback.textContent = error.message;
-  } finally {
     button.disabled = false;
   }
 });

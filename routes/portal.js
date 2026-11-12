@@ -1,6 +1,7 @@
 const crypto = require('node:crypto');
 const { readJson, sendJson } = require('../utils/http');
-const { consumeOtp, isOtpTestModeEnabled, issueOtp } = require('../utils/otp');
+const { consumeOtp, issueOtp } = require('../utils/otp');
+const { sendLoginCode } = require('../utils/mailer');
 const { CLUB_NAME_SET } = require('../utils/clubs');
 const { all, get, run } = require('../utils/database-query');
 
@@ -86,7 +87,14 @@ function publicAccount(account) {
   };
 }
 
-async function handleAuthRequest(request, response, database, url, sessions) {
+async function handleAuthRequest(
+  request,
+  response,
+  database,
+  url,
+  sessions,
+  sendOtpEmail = sendLoginCode,
+) {
   try {
     if (request.method === 'GET' && url.pathname === '/api/auth/me') {
       const account = await getPortalAccount(request, sessions, database);
@@ -102,11 +110,6 @@ async function handleAuthRequest(request, response, database, url, sessions) {
       return sendJson(response, 200, { message: 'Signed out.' });
     }
     if (request.method === 'POST' && url.pathname === '/api/auth/request-otp') {
-      if (!isOtpTestModeEnabled()) {
-        return sendJson(response, 503, {
-          error: 'OTP testing mode is disabled. No email delivery service is configured.',
-        });
-      }
       const body = await readJson(request);
       const email = String(body.email || '')
         .trim()
@@ -165,20 +168,34 @@ async function handleAuthRequest(request, response, database, url, sessions) {
           });
         }
       }
-      const { code } = await issueOtp(database, { email, role, purpose, metadata });
       otpRequestTimes.set(rateKey, Date.now());
+      const { code, id, expiresAt } = await issueOtp(database, { email, role, purpose, metadata });
+      try {
+        const delivery = await sendOtpEmail(email, code, purpose);
+        if (delivery?.accepted !== true) {
+          const error = new Error(
+            'Email delivery was not confirmed. No verification email was accepted.',
+          );
+          error.code = 'EOTP_EMAIL_UNCONFIRMED';
+          error.statusCode = 503;
+          throw error;
+        }
+      } catch (error) {
+        try {
+          await run(database, 'DELETE FROM otp_challenges WHERE id=?', [id]);
+        } catch {
+          console.error('Unable to remove an OTP challenge after email delivery failed.');
+        }
+        throw error;
+      }
       return sendJson(response, 200, {
-        message: 'Your verification code is ready. Enter the code displayed below.',
-        warning: 'Test mode codes do not verify email ownership.',
-        testCode: code,
+        message: 'Gmail accepted the verification email for sending.',
+        emailAccepted: true,
+        expiresInSeconds: Math.max(1, Math.ceil((expiresAt - Date.now()) / 1000)),
+        resendAfterSeconds: 60,
       });
     }
     if (request.method === 'POST' && url.pathname === '/api/auth/verify-otp') {
-      if (!isOtpTestModeEnabled()) {
-        return sendJson(response, 503, {
-          error: 'OTP testing mode is disabled. No email delivery service is configured.',
-        });
-      }
       const body = await readJson(request);
       const email = String(body.email || '')
         .trim()
@@ -251,7 +268,9 @@ async function handleAuthRequest(request, response, database, url, sessions) {
     sendJson(response, 404, { error: 'Authentication endpoint not found.' });
   } catch (error) {
     const status = error.statusCode || 500;
-    if (status === 500) console.error(error);
+    if (error.code?.startsWith('EOTP_EMAIL_')) {
+      console.error('OTP email delivery failed:', error.code);
+    } else if (status === 500) console.error(error);
     sendJson(response, status, {
       error: status === 500 ? 'Unable to complete sign-in request.' : error.message,
     });

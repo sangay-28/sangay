@@ -17,20 +17,7 @@ function codeHash(email, role, purpose, code) {
     .digest('hex');
 }
 
-function isOtpTestModeEnabled() {
-  return process.env.OTP_TEST_MODE === 'true';
-}
-
 async function issueOtp(database, { email, role, purpose, metadata = null }) {
-  if (!isOtpTestModeEnabled()) {
-    const error = new Error(
-      'OTP testing mode is disabled. Set OTP_TEST_MODE=true only for private testing; this does not verify email ownership.',
-    );
-    error.code = 'EOTP_TEST_MODE_DISABLED';
-    error.statusCode = 503;
-    throw error;
-  }
-
   const code = String(crypto.randomInt(0, 1_000_000)).padStart(6, '0');
   await run(database, 'DELETE FROM otp_challenges WHERE email=? AND role=? AND purpose=?', [
     email,
@@ -40,7 +27,8 @@ async function issueOtp(database, { email, role, purpose, metadata = null }) {
   await run(database, 'DELETE FROM otp_challenges WHERE expires_at < ?', [
     Date.now() - 24 * 60 * 60 * 1000,
   ]);
-  await run(
+  const expiresAt = Date.now() + CODE_TTL_MS;
+  const result = await run(
     database,
     `INSERT INTO otp_challenges (email,role,purpose,code_hash,metadata,expires_at)
     VALUES (?,?,?,?,?,?) RETURNING id`,
@@ -50,10 +38,10 @@ async function issueOtp(database, { email, role, purpose, metadata = null }) {
       purpose,
       codeHash(email, role, purpose, code),
       metadata ? JSON.stringify(metadata) : null,
-      Date.now() + CODE_TTL_MS,
+      expiresAt,
     ],
   );
-  return { code };
+  return { code, id: Number(result.lastInsertRowid), expiresAt };
 }
 
 async function consumeOtp(database, { email, role, purpose, code }) {
@@ -84,4 +72,4 @@ async function consumeOtp(database, { email, role, purpose, code }) {
   return { metadata: challenge.metadata ? JSON.parse(challenge.metadata) : null };
 }
 
-module.exports = { consumeOtp, isOtpTestModeEnabled, issueOtp };
+module.exports = { consumeOtp, issueOtp };
