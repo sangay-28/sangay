@@ -293,7 +293,7 @@ test('OTP requests fail honestly and remove challenges when Gmail is not configu
   });
   const body = await response.json();
   assert.equal(response.status, 503);
-  assert.match(body.error, /Email delivery is not configured/);
+  assert.match(body.error, /Email delivery configuration is missing/);
   assert.equal(body.emailAccepted, undefined);
   assert.equal(body.testCode, undefined);
   assert.equal(database.prepare('SELECT COUNT(*) AS count FROM otp_challenges').get().count, 0);

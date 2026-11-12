@@ -8,19 +8,34 @@ function mailError(kind, message, statusCode = 503) {
 }
 
 function getTransportConfig() {
-  const host = process.env.SMTP_HOST;
-  const port = Number(process.env.SMTP_PORT);
-  const secure = process.env.SMTP_SECURE === 'true';
-  const user = process.env.GMAIL_USER?.trim();
-  const password = process.env.GMAIL_APP_PASSWORD?.replace(/\s/g, '');
+  const host = process.env.SMTP_HOST?.trim();
+  const portValue = process.env.SMTP_PORT?.trim();
+  const port = Number(portValue);
+  const secureValue = process.env.SMTP_SECURE?.trim().toLowerCase();
+  const secure = secureValue === 'true';
+  const user = process.env.GMAIL_USER?.trim() || process.env.SMTP_USER?.trim();
+  const password =
+    process.env.GMAIL_APP_PASSWORD?.trim().replace(/\s/g, '') ||
+    process.env.SMTP_PASSWORD?.trim().replace(/\s/g, '');
 
-  if (!host || !port || !user || !password) {
+  const missing = [];
+  if (!user) missing.push('GMAIL_USER (or SMTP_USER)');
+  if (!password) missing.push('GMAIL_APP_PASSWORD (or SMTP_PASSWORD)');
+  if (!host) missing.push('SMTP_HOST');
+  if (!portValue) missing.push('SMTP_PORT');
+  if (!secureValue) missing.push('SMTP_SECURE');
+  if (missing.length) {
     throw mailError(
       'CONFIG',
-      'Email delivery is not configured. Set GMAIL_USER, GMAIL_APP_PASSWORD, SMTP_HOST, SMTP_PORT, and SMTP_SECURE in the server environment.',
+      `Email delivery configuration is missing: ${missing.join(', ')}. Add these values to .env or the hosting environment.`,
     );
   }
-  if (host !== 'smtp.gmail.com' || port !== 465 || !secure) {
+  if (
+    !Number.isInteger(port) ||
+    port !== 465 ||
+    secureValue !== 'true' ||
+    host !== 'smtp.gmail.com'
+  ) {
     throw mailError(
       'CONFIG',
       'Gmail SMTP must use SMTP_HOST=smtp.gmail.com, SMTP_PORT=465, and SMTP_SECURE=true.',
@@ -88,10 +103,10 @@ function createEmailContent(code) {
 
 async function sendLoginCode(email, code, purpose, createTransport = nodemailer.createTransport) {
   const config = getTransportConfig();
-  const transporter = createTransport(config);
   const content = createEmailContent(code);
 
   try {
+    const transporter = createTransport(config);
     const info = await transporter.sendMail({
       from: { name: 'Student Portal', address: config.auth.user },
       to: email,
@@ -108,21 +123,51 @@ async function sendLoginCode(email, code, purpose, createTransport = nodemailer.
     }
     return { accepted: true, messageId: info.messageId };
   } catch (error) {
-    if (error.code?.startsWith('EOTP_EMAIL_')) throw error;
-    if (error.code === 'EAUTH') {
-      throw mailError(
-        'AUTH',
-        'Gmail SMTP authentication failed. Check GMAIL_USER and use a Google App Password.',
-      );
-    }
-    if (['ECONNECTION', 'ECONNREFUSED', 'ETIMEDOUT', 'ESOCKET', 'EDNS'].includes(error.code)) {
-      throw mailError(
-        'UNAVAILABLE',
-        'Gmail email delivery is temporarily unavailable. Try again later.',
-      );
-    }
-    throw mailError('DELIVERY', 'Gmail could not accept the verification email. Try again later.');
+    throw mapSmtpError(error);
   }
 }
 
-module.exports = { createEmailContent, getTransportConfig, sendLoginCode };
+function mapSmtpError(error) {
+  if (error.code?.startsWith('EOTP_EMAIL_')) return error;
+  if (error.code === 'EAUTH') {
+    return mailError(
+      'AUTH',
+      'Gmail SMTP authentication failed. Check GMAIL_USER and use a Google App Password.',
+    );
+  }
+  if (
+    [
+      'ECONNECTION',
+      'ECONNREFUSED',
+      'ETIMEDOUT',
+      'ESOCKET',
+      'EDNS',
+      'EHOSTUNREACH',
+      'ENETUNREACH',
+      'ENOTFOUND',
+      'EAI_AGAIN',
+      'ETLS',
+    ].includes(error.code)
+  ) {
+    return mailError(
+      'UNAVAILABLE',
+      'Gmail email delivery is temporarily unavailable. Try again later.',
+    );
+  }
+  return mailError('DELIVERY', 'Gmail could not accept the verification email. Try again later.');
+}
+
+async function verifyEmailTransport(createTransport = nodemailer.createTransport) {
+  let transporter;
+  try {
+    transporter = createTransport(getTransportConfig());
+    await transporter.verify();
+    return true;
+  } catch (error) {
+    throw mapSmtpError(error);
+  } finally {
+    transporter?.close?.();
+  }
+}
+
+module.exports = { createEmailContent, getTransportConfig, sendLoginCode, verifyEmailTransport };

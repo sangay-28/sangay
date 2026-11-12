@@ -1,9 +1,8 @@
 const path = require('node:path');
+require('dotenv').config({ path: path.join(__dirname, '..', '.env'), quiet: true });
+
 const { DatabaseSync } = require('node:sqlite');
 const { initializePostgresDatabase } = require('../config/postgres');
-const { loadEnvFile } = require('../utils/load-env');
-
-loadEnvFile(path.join(__dirname, '..', '.env'));
 
 async function migrateSqliteData() {
   const sourcePath =

@@ -1,10 +1,9 @@
-const http = require('node:http');
 const path = require('node:path');
+require('dotenv').config({ path: path.join(__dirname, '.env'), quiet: true });
+
+const http = require('node:http');
 const { initializePostgresDatabase } = require('./config/postgres');
 const { createApplication } = require('./app');
-const { loadEnvFile } = require('./utils/load-env');
-
-loadEnvFile(path.join(__dirname, '.env'));
 
 const port = Number(process.env.PORT) || 3000;
 async function startServer() {
