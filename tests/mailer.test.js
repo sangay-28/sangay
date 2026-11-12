@@ -1,6 +1,11 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
-const { getTransportConfig, sendLoginCode, verifyEmailTransport } = require('../utils/mailer');
+const {
+  getEmailConfigStatus,
+  getTransportConfig,
+  sendLoginCode,
+  verifyEmailTransport,
+} = require('../utils/mailer');
 
 test('Gmail OTP mailer validates configuration, formats email, and maps SMTP failures safely', async () => {
   const keys = [
@@ -42,6 +47,13 @@ test('Gmail OTP mailer validates configuration, formats email, and maps SMTP fai
     assert.equal(transportConfig.secure, true);
     assert.equal(transportConfig.auth.user, 'verified.sender@gmail.com');
     assert.equal(transportConfig.auth.pass, 'abcdefghijklmnop');
+    assert.deepEqual(getEmailConfigStatus(), {
+      'GMAIL_USER or SMTP_USER': true,
+      'GMAIL_APP_PASSWORD or SMTP_PASSWORD': true,
+      SMTP_HOST: true,
+      SMTP_PORT: true,
+      SMTP_SECURE: true,
+    });
     assert.equal(outgoingMessage.to, 'student@example.com');
     assert.equal(outgoingMessage.subject, 'Verify Your Student Account');
     assert.match(outgoingMessage.text, /482193/);

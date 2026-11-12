@@ -53,6 +53,20 @@ function getTransportConfig() {
   };
 }
 
+function getEmailConfigStatus() {
+  return {
+    'GMAIL_USER or SMTP_USER': Boolean(
+      process.env.GMAIL_USER?.trim() || process.env.SMTP_USER?.trim(),
+    ),
+    'GMAIL_APP_PASSWORD or SMTP_PASSWORD': Boolean(
+      process.env.GMAIL_APP_PASSWORD?.trim() || process.env.SMTP_PASSWORD?.trim(),
+    ),
+    SMTP_HOST: Boolean(process.env.SMTP_HOST?.trim()),
+    SMTP_PORT: Boolean(process.env.SMTP_PORT?.trim()),
+    SMTP_SECURE: Boolean(process.env.SMTP_SECURE?.trim()),
+  };
+}
+
 function createEmailContent(code) {
   return {
     subject: 'Verify Your Student Account',
@@ -170,4 +184,10 @@ async function verifyEmailTransport(createTransport = nodemailer.createTransport
   }
 }
 
-module.exports = { createEmailContent, getTransportConfig, sendLoginCode, verifyEmailTransport };
+module.exports = {
+  createEmailContent,
+  getEmailConfigStatus,
+  getTransportConfig,
+  sendLoginCode,
+  verifyEmailTransport,
+};
